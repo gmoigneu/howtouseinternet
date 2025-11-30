@@ -1,0 +1,121 @@
+---
+import { t } from '../../i18n/translations';
+
+interface Chapter {
+  slug: string;
+  title: string;
+  order: number;
+  url: string;
+}
+
+interface Props {
+  chapters: Chapter[];
+  currentChapter: string;
+  courseSlug: string;
+  locale: string;
+}
+
+const { chapters, currentChapter, courseSlug, locale } = Astro.props;
+---
+
+<nav aria-label={t(locale, 'chapters')} class="chapter-nav">
+  <h2 class="nav-link nav-link-active mb-4">{t(locale, 'chapters')}</h2>
+  <ol class="chapter-list">
+    {chapters.map((chapter, index) => (
+      <li>
+        <a
+          href={chapter.url}
+          class:list={[
+            'chapter-link',
+            currentChapter === chapter.slug && 'chapter-link-active',
+          ]}
+          aria-current={currentChapter === chapter.slug ? 'page' : undefined}
+        >
+          <span
+            class="chapter-status"
+            data-chapter={chapter.slug}
+            aria-label="Not completed"
+          />
+          <span class="chapter-number">{index + 1}.</span>
+          <span class="chapter-title">{chapter.title}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .chapter-nav {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .chapter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .chapter-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    transition: color 0.15s ease;
+  }
+
+  .chapter-link:hover {
+    color: var(--color-text);
+  }
+
+  .chapter-link-active {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .chapter-status {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.125rem;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+
+  .chapter-status.completed {
+    background-color: var(--color-text);
+    border-color: var(--color-text);
+    position: relative;
+  }
+
+  .chapter-status.completed::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%) rotate(45deg);
+    width: 0.25rem;
+    height: 0.4rem;
+    border-right: 1.5px solid var(--color-background);
+    border-bottom: 1.5px solid var(--color-background);
+  }
+
+  .chapter-number {
+    flex-shrink: 0;
+    min-width: 1.25rem;
+  }
+
+  .chapter-title {
+    flex: 1;
+  }
+</style>

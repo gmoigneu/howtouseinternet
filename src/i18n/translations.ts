@@ -41,6 +41,15 @@ export const translations: Record<Locale, Translation> = {
       notTranslated: 'This course is not yet available in your language. Showing English version.',
       siteTitle: 'How To Use Internet',
       siteDescription: 'Free courses about internet concepts, security, and AI usage.',
+      heroTitle: 'Learn to navigate the digital world with confidence',
+      heroDescription: 'Free, open-source courses designed for everyone — no technical background required. Understand how the internet works, stay safe online, and make the most of AI tools.',
+      missionTitle: 'Our Mission',
+      missionDescription: 'We believe everyone deserves to understand the technology they use every day. Our courses break down complex topics into simple, practical lessons that anyone can follow.',
+      openSourceTitle: 'Open Source',
+      openSourceDescription: 'All our content is free and open source under the Apache 2.0 license. Anyone can contribute, translate, or adapt our courses.',
+      forEveryoneTitle: 'For Everyone',
+      forEveryoneDescription: 'Written in plain language, our courses are designed for people who want to learn without getting lost in technical jargon.',
+      exploreCourses: 'Explore our courses',
       editThisCourse: 'Edit this course',
       viewOnGithub: 'GitHub',
       license: 'License',
@@ -51,6 +60,11 @@ export const translations: Record<Locale, Translation> = {
       difficultyBeginner: 'Beginner',
       difficultyIntermediate: 'Intermediate',
       difficultyAdvanced: 'Advanced',
+      progress: 'Progress',
+      previousChapter: 'Previous',
+      nextChapter: 'Next',
+      chapterCompleted: 'Completed',
+      startCourse: 'Start course',
     },
   },
   fr: {
@@ -92,6 +106,15 @@ export const translations: Record<Locale, Translation> = {
       notTranslated: 'Ce cours n\'est pas encore disponible dans votre langue. Affichage de la version anglaise.',
       siteTitle: 'How To Use Internet',
       siteDescription: 'Cours gratuits sur les concepts d\'internet, la sécurité et l\'utilisation de l\'IA.',
+      heroTitle: 'Apprenez à naviguer dans le monde numérique en toute confiance',
+      heroDescription: 'Des cours gratuits et open source conçus pour tous — aucune connaissance technique requise. Comprenez comment fonctionne Internet, restez en sécurité en ligne et tirez le meilleur parti des outils d\'IA.',
+      missionTitle: 'Notre Mission',
+      missionDescription: 'Nous pensons que chacun mérite de comprendre la technologie qu\'il utilise au quotidien. Nos cours décomposent des sujets complexes en leçons simples et pratiques accessibles à tous.',
+      openSourceTitle: 'Open Source',
+      openSourceDescription: 'Tout notre contenu est gratuit et open source sous licence Apache 2.0. Chacun peut contribuer, traduire ou adapter nos cours.',
+      forEveryoneTitle: 'Pour Tous',
+      forEveryoneDescription: 'Rédigés dans un langage simple, nos cours sont conçus pour ceux qui veulent apprendre sans se perdre dans le jargon technique.',
+      exploreCourses: 'Découvrir nos cours',
       editThisCourse: 'Modifier ce cours',
       viewOnGithub: 'GitHub',
       license: 'Licence',
@@ -102,6 +125,11 @@ export const translations: Record<Locale, Translation> = {
       difficultyBeginner: 'Débutant',
       difficultyIntermediate: 'Intermédiaire',
       difficultyAdvanced: 'Avancé',
+      progress: 'Progression',
+      previousChapter: 'Précédent',
+      nextChapter: 'Suivant',
+      chapterCompleted: 'Terminé',
+      startCourse: 'Commencer le cours',
     },
   },
   es: {
@@ -143,6 +171,15 @@ export const translations: Record<Locale, Translation> = {
       notTranslated: 'Este curso aún no está disponible en tu idioma. Mostrando la versión en inglés.',
       siteTitle: 'How To Use Internet',
       siteDescription: 'Cursos gratuitos sobre conceptos de internet, seguridad y uso de IA.',
+      heroTitle: 'Aprende a navegar el mundo digital con confianza',
+      heroDescription: 'Cursos gratuitos y de código abierto diseñados para todos — no se requieren conocimientos técnicos. Comprende cómo funciona Internet, mantente seguro en línea y aprovecha al máximo las herramientas de IA.',
+      missionTitle: 'Nuestra Misión',
+      missionDescription: 'Creemos que todos merecen entender la tecnología que usan cada día. Nuestros cursos desglosan temas complejos en lecciones simples y prácticas que cualquiera puede seguir.',
+      openSourceTitle: 'Código Abierto',
+      openSourceDescription: 'Todo nuestro contenido es gratuito y de código abierto bajo la licencia Apache 2.0. Cualquiera puede contribuir, traducir o adaptar nuestros cursos.',
+      forEveryoneTitle: 'Para Todos',
+      forEveryoneDescription: 'Escritos en lenguaje sencillo, nuestros cursos están diseñados para personas que quieren aprender sin perderse en jerga técnica.',
+      exploreCourses: 'Explorar nuestros cursos',
       editThisCourse: 'Editar este curso',
       viewOnGithub: 'GitHub',
       license: 'Licencia',
@@ -153,6 +190,11 @@ export const translations: Record<Locale, Translation> = {
       difficultyBeginner: 'Principiante',
       difficultyIntermediate: 'Intermedio',
       difficultyAdvanced: 'Avanzado',
+      progress: 'Progreso',
+      previousChapter: 'Anterior',
+      nextChapter: 'Siguiente',
+      chapterCompleted: 'Completado',
+      startCourse: 'Iniciar curso',
     },
   },
 };
@@ -174,6 +216,15 @@ interface Translation {
     notTranslated: string;
     siteTitle: string;
     siteDescription: string;
+    heroTitle: string;
+    heroDescription: string;
+    missionTitle: string;
+    missionDescription: string;
+    openSourceTitle: string;
+    openSourceDescription: string;
+    forEveryoneTitle: string;
+    forEveryoneDescription: string;
+    exploreCourses: string;
     editThisCourse: string;
     viewOnGithub: string;
     license: string;
@@ -184,6 +235,11 @@ interface Translation {
     difficultyBeginner: string;
     difficultyIntermediate: string;
     difficultyAdvanced: string;
+    progress: string;
+    previousChapter: string;
+    nextChapter: string;
+    chapterCompleted: string;
+    startCourse: string;
   };
 }
 

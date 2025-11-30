@@ -34,7 +34,7 @@ const githubEditUrl = githubEditPath ? `${githubRepoUrl}/edit/main/${githubEditP
     <meta name="generator" content={Astro.generator} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet" />
     <title>{title} | How To Use Internet</title>
   </head>
   <body class="min-h-screen flex flex-col">
@@ -46,9 +46,10 @@ const githubEditUrl = githubEditPath ? `${githubRepoUrl}/edit/main/${githubEditP
           <!-- Logo -->
           <a
             href={getRelativeLocaleUrl(currentLocale, '/')}
-            class="font-serif text-xl font-medium text-text no-underline hover:text-text"
+            class="text-2xl font-extrabold text-text no-underline hover:text-text"
+            style="font-family: 'Nunito', sans-serif;"
           >
-            How To Use Internet
+            how to use internet.
           </a>
 
           <!-- Language selector -->
@@ -124,6 +125,18 @@ const githubEditUrl = githubEditPath ? `${githubRepoUrl}/edit/main/${githubEditP
               class="text-sm text-text-muted hover:text-text no-underline"
             >
               {t(currentLocale, 'license')}
+            </a>
+            <a
+              href="/privacy"
+              class="text-sm text-text-muted hover:text-text no-underline"
+            >
+              Privacy
+            </a>
+            <a
+              href="/terms"
+              class="text-sm text-text-muted hover:text-text no-underline"
+            >
+              Terms
             </a>
           </nav>
         </div>

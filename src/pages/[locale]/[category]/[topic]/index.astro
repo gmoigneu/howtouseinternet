@@ -2,44 +2,100 @@
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import { t, getCategoryName, getTopicName } from '../../../../i18n/translations';
+import { t, getCategoryName, getTopicName, getDifficultyLabel, getReadingTime } from '../../../../i18n/translations';
+import { parseEntryId } from '../../../../lib/courses';
 
 export async function getStaticPaths() {
   const allCourses = await getCollection('courses');
 
-  // Group courses by category/topic and locale
+  // Group courses by category/topic, then by courseSlug
+  // For multi-chapter courses, we use the _meta file title
+  // For single-page courses, we use the locale file title
   const topicsMap = new Map<string, {
     category: string;
     topic: string;
-    coursesByLocale: Map<string, Array<{ slug: string; title: string }>>;
+    courses: Map<string, {
+      slug: string;
+      titles: Map<string, string>; // locale -> title
+      descriptions: Map<string, string>; // locale -> description
+      isMultiChapter: boolean;
+      chapterCount: number;
+      difficulty?: 'beginner' | 'intermediate' | 'advanced';
+      readingTime?: number;
+    }>;
   }>();
 
   for (const course of allCourses) {
-    const parts = course.id.split('/');
-    if (parts.length < 4) continue;
+    const parsed = parseEntryId(course.id);
+    const topicKey = `${parsed.category}/${parsed.topic}`;
+    const courseKey = parsed.courseSlug;
 
-    const [category, topic, courseSlug, courseLocale] = parts;
-    const key = `${category}/${topic}`;
-
-    if (!topicsMap.has(key)) {
-      topicsMap.set(key, { category, topic, coursesByLocale: new Map() });
+    if (!topicsMap.has(topicKey)) {
+      topicsMap.set(topicKey, {
+        category: parsed.category,
+        topic: parsed.topic,
+        courses: new Map(),
+      });
     }
 
-    const topicData = topicsMap.get(key)!;
-    if (!topicData.coursesByLocale.has(courseLocale)) {
-      topicData.coursesByLocale.set(courseLocale, []);
+    const topicData = topicsMap.get(topicKey)!;
+
+    if (!topicData.courses.has(courseKey)) {
+      topicData.courses.set(courseKey, {
+        slug: courseKey,
+        titles: new Map(),
+        descriptions: new Map(),
+        isMultiChapter: false,
+        chapterCount: 0,
+      });
     }
-    topicData.coursesByLocale.get(courseLocale)!.push({ slug: courseSlug, title: course.data.title });
+
+    const courseData = topicData.courses.get(courseKey)!;
+
+    // Mark as multi-chapter if we see chapter files or meta files
+    if (parsed.isChapter || parsed.isMeta) {
+      courseData.isMultiChapter = true;
+    }
+
+    // Count chapters (only English to avoid double counting)
+    if (parsed.isChapter && parsed.locale === 'en') {
+      courseData.chapterCount++;
+    }
+
+    // Get title and description from meta file (for multi-chapter) or locale file (for single-page)
+    if (parsed.isMeta || (!parsed.isChapter && !parsed.isMeta)) {
+      courseData.titles.set(parsed.locale, course.data.title);
+      if (course.data.description) {
+        courseData.descriptions.set(parsed.locale, course.data.description);
+      }
+      // Get metadata from English or meta file
+      if (parsed.locale === 'en' || parsed.isMeta) {
+        if (course.data.difficulty) {
+          courseData.difficulty = course.data.difficulty;
+        }
+        if (course.data.readingTime) {
+          courseData.readingTime = course.data.readingTime;
+        }
+      }
+    }
   }
 
   const paths = [];
   for (const locale of ['en', 'fr', 'es']) {
-    for (const { category, topic, coursesByLocale } of topicsMap.values()) {
-      // Use locale-specific titles if available, fallback to English
-      const courses = coursesByLocale.get(locale) || coursesByLocale.get('en') || [];
+    for (const { category, topic, courses } of topicsMap.values()) {
+      const courseList = Array.from(courses.values()).map((course) => ({
+        slug: course.slug,
+        title: course.titles.get(locale) || course.titles.get('en') || course.slug,
+        description: course.descriptions.get(locale) || course.descriptions.get('en') || '',
+        isMultiChapter: course.isMultiChapter,
+        chapterCount: course.chapterCount,
+        difficulty: course.difficulty,
+        readingTime: course.readingTime,
+      }));
+
       paths.push({
         params: { locale, category, topic },
-        props: { category, topic, courses },
+        props: { category, topic, courses: courseList },
       });
     }
   }
@@ -47,44 +103,154 @@ export async function getStaticPaths() {
   return paths;
 }
 
+interface CourseInfo {
+  slug: string;
+  title: string;
+  description: string;
+  isMultiChapter: boolean;
+  chapterCount: number;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  readingTime?: number;
+}
+
 interface Props {
   category: string;
   topic: string;
-  courses: Array<{ slug: string; title: string }>;
+  courses: CourseInfo[];
 }
 
 const { locale } = Astro.params;
 const { category, topic, courses } = Astro.props;
 const categoryName = getCategoryName(locale, category);
 const topicName = getTopicName(locale, topic);
+
+// Topic descriptions
+const topicDescriptions: Record<string, Record<string, string>> = {
+  'scams': {
+    en: 'Learn to recognize and protect yourself from phishing, smishing, and other online scams targeting individuals and organizations.',
+    fr: 'Apprenez à reconnaître et à vous protéger contre le phishing, le smishing et autres arnaques en ligne ciblant les particuliers et les organisations.',
+    es: 'Aprende a reconocer y protegerte del phishing, smishing y otras estafas en línea dirigidas a individuos y organizaciones.',
+  },
+  'passwords': {
+    en: 'Master password security with best practices for creating, managing, and protecting your credentials.',
+    fr: 'Maîtrisez la sécurité des mots de passe avec les meilleures pratiques pour créer, gérer et protéger vos identifiants.',
+    es: 'Domina la seguridad de contraseñas con las mejores prácticas para crear, gestionar y proteger tus credenciales.',
+  },
+  'prompting': {
+    en: 'Learn how to communicate effectively with AI assistants to get better, more useful responses.',
+    fr: 'Apprenez à communiquer efficacement avec les assistants IA pour obtenir des réponses meilleures et plus utiles.',
+    es: 'Aprende a comunicarte efectivamente con asistentes de IA para obtener respuestas mejores y más útiles.',
+  },
+};
+
+const topicDescription = topicDescriptions[topic]?.[locale] || topicDescriptions[topic]?.['en'] || '';
 ---
 
 <BaseLayout title={topicName}>
-  <div class="max-w-[680px]">
+  <div class="max-w-4xl">
     <p class="mb-8">
       <a href={getRelativeLocaleUrl(locale, `/${category}`)} class="nav-link">
         {t(locale, 'backTo')} {categoryName}
       </a>
     </p>
 
-    <h1 class="font-serif text-4xl font-bold leading-tight mb-8">
-      {topicName}
-    </h1>
+    <header class="mb-12">
+      <h1 class="font-serif text-4xl font-semibold leading-tight mb-4">
+        {topicName}
+      </h1>
+      {topicDescription && (
+        <p class="text-lg text-text-muted leading-relaxed">
+          {topicDescription}
+        </p>
+      )}
+    </header>
 
     <section>
-      <h2 class="nav-link nav-link-active mb-6">{t(locale, 'courses')}</h2>
-      <ul class="space-y-4 list-none pl-0">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-text-muted mb-6">
+        {t(locale, 'courses')}
+      </h2>
+
+      <div class="grid grid-cols-1 gap-4">
         {courses.map((course) => (
-          <li>
-            <a
-              href={getRelativeLocaleUrl(locale, `/${category}/${topic}/${course.slug}`)}
-              class="text-text underline hover:text-black"
-            >
-              {course.title}
-            </a>
-          </li>
+          <a
+            href={getRelativeLocaleUrl(locale, `/${category}/${topic}/${course.slug}`)}
+            class="group block p-6 bg-surface rounded-lg border border-border hover:border-text-muted transition-colors"
+          >
+            <div class="flex flex-col gap-3">
+              <div class="flex items-start justify-between gap-4">
+                <h3 class="font-sans text-xl font-semibold text-text group-hover:text-black">
+                  {course.title}
+                </h3>
+                <svg
+                  class="w-5 h-5 text-text-subtle group-hover:text-text-muted transition-colors flex-shrink-0 mt-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+
+              {course.description && (
+                <p class="text-text-muted leading-relaxed line-clamp-2">
+                  {course.description}
+                </p>
+              )}
+
+              <div class="flex flex-wrap items-center gap-3 text-sm text-text-muted pt-1">
+                {course.readingTime && (
+                  <span class="inline-flex items-center gap-1.5">
+                    <svg
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    {getReadingTime(locale, course.readingTime)}
+                  </span>
+                )}
+                {course.difficulty && (
+                  <span class="inline-flex items-center gap-1.5">
+                    <svg
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                    {getDifficultyLabel(locale, course.difficulty)}
+                  </span>
+                )}
+                {course.isMultiChapter && course.chapterCount > 0 && (
+                  <span class="inline-flex items-center gap-1.5">
+                    <svg
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                    {course.chapterCount} {t(locale, 'chapters').toLowerCase()}
+                  </span>
+                )}
+              </div>
+            </div>
+          </a>
         ))}
-      </ul>
+      </div>
     </section>
   </div>
 </BaseLayout>

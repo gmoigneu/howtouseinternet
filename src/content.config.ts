@@ -4,14 +4,16 @@ import { glob } from 'astro/loaders';
 const courses = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/courses' }),
   schema: z.object({
+    // Required for all files
     title: z.string(),
-    description: z.string(),
-    keywords: z.array(z.string()),
-    objectives: z.array(z.string()),
-    updated_at: z.coerce.date(),
-    author: z.string(),
-    readingTime: z.number().min(1),
-    difficulty: z.enum(['beginner', 'intermediate', 'advanced']),
+    // Optional - used for course metadata (_meta files) and single-page courses
+    description: z.string().optional(),
+    keywords: z.array(z.string()).optional(),
+    objectives: z.array(z.string()).optional(),
+    updated_at: z.coerce.date().optional(),
+    author: z.string().optional(),
+    readingTime: z.number().min(1).optional(),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
     prerequisites: z.array(z.string()).optional(),
   }),
 });

@@ -3,24 +3,41 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { t, getTopicName, getDifficultyLabel, getReadingTime } from '../../../../i18n/translations';
+import { parseEntryId } from '../../../../lib/courses';
 
 export async function getStaticPaths() {
   const courses = await getCollection('courses');
 
   // Group courses by category/topic/courseSlug
+  // Only include SINGLE-PAGE courses (those without numbered chapter files)
   const courseMap = new Map<string, Map<string, typeof courses[number]>>();
+  const multiChapterCourses = new Set<string>();
 
+  // First pass: identify multi-chapter courses
   for (const course of courses) {
-    const parts = course.id.split('/');
-    if (parts.length < 4) continue;
+    const parsed = parseEntryId(course.id);
+    const key = `${parsed.category}/${parsed.topic}/${parsed.courseSlug}`;
 
-    const [category, topic, courseSlug, courseLocale] = parts;
-    const key = `${category}/${topic}/${courseSlug}`;
+    if (parsed.isChapter || parsed.isMeta) {
+      multiChapterCourses.add(key);
+    }
+  }
+
+  // Second pass: collect only single-page courses
+  for (const course of courses) {
+    const parsed = parseEntryId(course.id);
+    const key = `${parsed.category}/${parsed.topic}/${parsed.courseSlug}`;
+
+    // Skip multi-chapter courses - they're handled by [course]/index.astro
+    if (multiChapterCourses.has(key)) continue;
+
+    // Skip files that aren't simple locale files (e.g., en.md, fr.md)
+    if (parsed.filename !== '') continue;
 
     if (!courseMap.has(key)) {
       courseMap.set(key, new Map());
     }
-    courseMap.get(key)!.set(courseLocale, course);
+    courseMap.get(key)!.set(parsed.locale, course);
   }
 
   const paths = [];

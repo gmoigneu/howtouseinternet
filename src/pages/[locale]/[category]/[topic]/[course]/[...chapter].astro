@@ -1,0 +1,300 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import ChapterNav from '../../../../../components/course/ChapterNav.astro';
+import ChapterProgress from '../../../../../components/course/ChapterProgress.astro';
+import ChapterPagination from '../../../../../components/course/ChapterPagination.astro';
+import ProgressTracker from '../../../../../components/course/ProgressTracker.astro';
+import { getCollection, render } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { t, getTopicName } from '../../../../../i18n/translations';
+import { parseEntryId, getChapterUrl } from '../../../../../lib/courses';
+
+export async function getStaticPaths() {
+  const allCourses = await getCollection('courses');
+
+  // Find all multi-chapter courses (those with numbered chapter files)
+  const multiChapterCourses = new Map<
+    string,
+    {
+      meta: Map<string, (typeof allCourses)[number]>;
+      chapters: Map<string, (typeof allCourses)[number][]>;
+    }
+  >();
+
+  for (const entry of allCourses) {
+    const parsed = parseEntryId(entry.id);
+
+    // Only process meta files and chapter files for multi-chapter courses
+    if (!parsed.isMeta && !parsed.isChapter) continue;
+
+    const key = `${parsed.category}/${parsed.topic}/${parsed.courseSlug}`;
+
+    if (!multiChapterCourses.has(key)) {
+      multiChapterCourses.set(key, {
+        meta: new Map(),
+        chapters: new Map(),
+      });
+    }
+
+    const course = multiChapterCourses.get(key)!;
+
+    if (parsed.isMeta) {
+      course.meta.set(parsed.locale, entry);
+    } else if (parsed.isChapter) {
+      if (!course.chapters.has(parsed.locale)) {
+        course.chapters.set(parsed.locale, []);
+      }
+      course.chapters.get(parsed.locale)!.push(entry);
+    }
+  }
+
+  const paths = [];
+
+  for (const [key, courseData] of multiChapterCourses) {
+    const [category, topic, courseSlug] = key.split('/');
+
+    // Only process courses that have chapters
+    if (courseData.chapters.size === 0) continue;
+
+    for (const locale of ['en', 'fr', 'es']) {
+      // Get chapters for this locale, fallback to English
+      let chapters = courseData.chapters.get(locale);
+      if (!chapters || chapters.length === 0) {
+        chapters = courseData.chapters.get('en');
+      }
+      if (!chapters || chapters.length === 0) continue;
+
+      // Sort chapters by order
+      chapters.sort((a, b) => {
+        const parsedA = parseEntryId(a.id);
+        const parsedB = parseEntryId(b.id);
+        return (parsedA.chapterOrder || 0) - (parsedB.chapterOrder || 0);
+      });
+
+      // Get meta for this locale, fallback to English
+      const meta = courseData.meta.get(locale) || courseData.meta.get('en');
+
+      // Build chapter list for navigation
+      const chapterList = chapters.map((ch) => {
+        const p = parseEntryId(ch.id);
+        return {
+          slug: p.chapterSlug!,
+          title: ch.data.title,
+          order: p.chapterOrder!,
+          url: getChapterUrl(
+            locale,
+            category,
+            topic,
+            courseSlug,
+            p.chapterSlug,
+            p.chapterOrder === 1
+          ),
+        };
+      });
+
+      const availableLocales = Array.from(
+        new Set([
+          ...Array.from(courseData.meta.keys()),
+          ...Array.from(courseData.chapters.keys()),
+        ])
+      );
+
+      // Generate paths for chapters 2+ (chapter 1 is handled by index.astro)
+      // Also generate path for chapter 1 slug to allow direct linking
+      for (let i = 0; i < chapters.length; i++) {
+        const chapter = chapters[i];
+        const chapterParsed = parseEntryId(chapter.id);
+
+        // Skip first chapter - it's handled by index.astro
+        // But we still want to support /course/01-xxx URLs redirecting or showing content
+        if (i === 0) continue;
+
+        const prevChapter = i > 0 ? chapterList[i - 1] : undefined;
+        const nextChapter = i < chapters.length - 1 ? chapterList[i + 1] : undefined;
+
+        paths.push({
+          params: {
+            locale,
+            category,
+            topic,
+            course: courseSlug,
+            chapter: chapterParsed.chapterSlug,
+          },
+          props: {
+            category,
+            topic,
+            courseSlug,
+            meta,
+            chapter,
+            chapterIndex: i,
+            chapters: chapterList,
+            prevChapter,
+            nextChapter,
+            availableLocales,
+            isTranslated: courseData.chapters.has(locale),
+          },
+        });
+      }
+    }
+  }
+
+  return paths;
+}
+
+interface ChapterInfo {
+  slug: string;
+  title: string;
+  order: number;
+  url: string;
+}
+
+interface Props {
+  category: string;
+  topic: string;
+  courseSlug: string;
+  meta?: Awaited<ReturnType<typeof getCollection>>[number];
+  chapter: Awaited<ReturnType<typeof getCollection>>[number];
+  chapterIndex: number;
+  chapters: ChapterInfo[];
+  prevChapter?: ChapterInfo;
+  nextChapter?: ChapterInfo;
+  availableLocales: string[];
+  isTranslated: boolean;
+}
+
+const { locale } = Astro.params;
+const {
+  category,
+  topic,
+  courseSlug,
+  meta,
+  chapter,
+  chapterIndex,
+  chapters,
+  prevChapter,
+  nextChapter,
+  availableLocales,
+  isTranslated,
+} = Astro.props;
+
+const { Content } = await render(chapter);
+const topicName = getTopicName(locale, topic);
+
+// Get course metadata from meta file
+const courseTitle = meta?.data.title || chapter.data.title;
+const author = meta?.data.author || chapter.data.author;
+const updatedAt = meta?.data.updated_at || chapter.data.updated_at;
+
+// Current chapter info
+const currentChapter = chapters[chapterIndex];
+
+// Build the path to the markdown file for GitHub edit link
+const githubEditPath = `src/content/courses/${chapter.id}`;
+---
+
+<BaseLayout title={`${chapter.data.title} - ${courseTitle}`} sidebar={true} githubEditPath={githubEditPath}>
+  <aside slot="sidebar" class="hidden lg:block">
+    <div class="sticky top-8">
+      <p class="mb-6">
+        <a
+          href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}
+          class="nav-link"
+        >
+          {t(locale, 'backTo')} {topicName}
+        </a>
+      </p>
+
+      <ChapterProgress
+        totalChapters={chapters.length}
+        courseSlug={courseSlug}
+        locale={locale}
+      />
+
+      <ChapterNav
+        chapters={chapters}
+        currentChapter={currentChapter.slug}
+        courseSlug={courseSlug}
+        locale={locale}
+      />
+    </div>
+  </aside>
+
+  <article class="prose">
+    <p class="lg:hidden mb-8">
+      <a
+        href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}
+        class="nav-link"
+      >
+        {t(locale, 'backTo')} {topicName}
+      </a>
+    </p>
+
+    <header class="mb-8">
+      <p class="text-sm text-text-muted mb-4">
+        <a
+          href={getRelativeLocaleUrl(locale, `/${category}/${topic}/${courseSlug}`)}
+          class="hover:text-text no-underline"
+        >
+          {courseTitle}
+        </a>
+      </p>
+
+      {!isTranslated && (
+        <p class="text-sm text-text-subtle italic border-l-2 border-border pl-4 my-6">
+          {t(locale, 'notTranslated')}
+        </p>
+      )}
+
+      <!-- Mobile chapter navigation -->
+      <div class="lg:hidden my-8">
+        <ChapterProgress
+          totalChapters={chapters.length}
+          courseSlug={courseSlug}
+          locale={locale}
+        />
+        <details class="border border-border rounded-lg">
+          <summary class="p-4 cursor-pointer font-sans text-sm font-medium">
+            {t(locale, 'chapters')} ({chapters.length})
+          </summary>
+          <div class="p-4 pt-0">
+            <ChapterNav
+              chapters={chapters}
+              currentChapter={currentChapter.slug}
+              courseSlug={courseSlug}
+              locale={locale}
+            />
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <Content />
+
+    <ChapterPagination
+      prevChapter={prevChapter}
+      nextChapter={nextChapter}
+      locale={locale}
+    />
+
+    {(author || updatedAt) && (
+      <footer class="mt-16 pt-8 border-t border-border">
+        <dl class="text-sm text-text-muted space-y-1">
+          {author && (
+            <div class="flex gap-2">
+              <dt class="font-medium">{t(locale, 'author')}:</dt>
+              <dd>{author}</dd>
+            </div>
+          )}
+          {updatedAt && (
+            <div class="flex gap-2">
+              <dt class="font-medium">{t(locale, 'lastUpdated')}:</dt>
+              <dd>{updatedAt.toLocaleDateString(locale)}</dd>
+            </div>
+          )}
+        </dl>
+      </footer>
+    )}
+  </article>
+
+  <ProgressTracker />
+</BaseLayout>

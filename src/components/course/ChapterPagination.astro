@@ -1,0 +1,93 @@
+---
+import { t } from '../../i18n/translations';
+
+interface ChapterLink {
+  slug: string;
+  title: string;
+  url: string;
+}
+
+interface Props {
+  prevChapter?: ChapterLink;
+  nextChapter?: ChapterLink;
+  locale: string;
+}
+
+const { prevChapter, nextChapter, locale } = Astro.props;
+---
+
+<nav aria-label="Chapter navigation" class="chapter-pagination">
+  {
+    prevChapter ? (
+      <a href={prevChapter.url} class="pagination-link pagination-prev">
+        <span class="pagination-label">{t(locale, 'previousChapter')}</span>
+        <span class="pagination-title">{prevChapter.title}</span>
+      </a>
+    ) : (
+      <div />
+    )
+  }
+
+  {
+    nextChapter ? (
+      <a href={nextChapter.url} class="pagination-link pagination-next">
+        <span class="pagination-label">{t(locale, 'nextChapter')}</span>
+        <span class="pagination-title">{nextChapter.title}</span>
+      </a>
+    ) : (
+      <div />
+    )
+  }
+</nav>
+
+<style>
+  .chapter-pagination {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pagination-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    transition: color 0.15s ease;
+    max-width: 45%;
+  }
+
+  .pagination-link:hover {
+    color: var(--color-text);
+  }
+
+  .pagination-prev {
+    align-items: flex-start;
+  }
+
+  .pagination-next {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .pagination-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .pagination-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .pagination-link:hover .pagination-title {
+    text-decoration: underline;
+  }
+</style>

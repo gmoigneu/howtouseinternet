@@ -1,0 +1,346 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import ChapterNav from '../../../../../components/course/ChapterNav.astro';
+import ChapterProgress from '../../../../../components/course/ChapterProgress.astro';
+import ChapterPagination from '../../../../../components/course/ChapterPagination.astro';
+import ProgressTracker from '../../../../../components/course/ProgressTracker.astro';
+import { getCollection, render } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import {
+  t,
+  getTopicName,
+  getDifficultyLabel,
+  getReadingTime,
+} from '../../../../../i18n/translations';
+import {
+  parseEntryId,
+  getChaptersForLocale,
+  getChapterUrl,
+  getChapterNavigation,
+  type Chapter,
+} from '../../../../../lib/courses';
+
+export async function getStaticPaths() {
+  const allCourses = await getCollection('courses');
+
+  // Find all multi-chapter courses (those with numbered chapter files)
+  const multiChapterCourses = new Map<
+    string,
+    {
+      meta: Map<string, (typeof allCourses)[number]>;
+      chapters: Map<string, (typeof allCourses)[number][]>;
+    }
+  >();
+
+  for (const entry of allCourses) {
+    const parsed = parseEntryId(entry.id);
+
+    // Only process meta files and chapter files for multi-chapter courses
+    if (!parsed.isMeta && !parsed.isChapter) continue;
+
+    const key = `${parsed.category}/${parsed.topic}/${parsed.courseSlug}`;
+
+    if (!multiChapterCourses.has(key)) {
+      multiChapterCourses.set(key, {
+        meta: new Map(),
+        chapters: new Map(),
+      });
+    }
+
+    const course = multiChapterCourses.get(key)!;
+
+    if (parsed.isMeta) {
+      course.meta.set(parsed.locale, entry);
+    } else if (parsed.isChapter) {
+      if (!course.chapters.has(parsed.locale)) {
+        course.chapters.set(parsed.locale, []);
+      }
+      course.chapters.get(parsed.locale)!.push(entry);
+    }
+  }
+
+  const paths = [];
+
+  for (const [key, courseData] of multiChapterCourses) {
+    const [category, topic, courseSlug] = key.split('/');
+
+    // Only process courses that have chapters
+    if (courseData.chapters.size === 0) continue;
+
+    for (const locale of ['en', 'fr', 'es']) {
+      // Get chapters for this locale, fallback to English
+      let chapters = courseData.chapters.get(locale);
+      if (!chapters || chapters.length === 0) {
+        chapters = courseData.chapters.get('en');
+      }
+      if (!chapters || chapters.length === 0) continue;
+
+      // Sort chapters by order
+      chapters.sort((a, b) => {
+        const parsedA = parseEntryId(a.id);
+        const parsedB = parseEntryId(b.id);
+        return (parsedA.chapterOrder || 0) - (parsedB.chapterOrder || 0);
+      });
+
+      // Get meta for this locale, fallback to English
+      const meta = courseData.meta.get(locale) || courseData.meta.get('en');
+
+      // Get first chapter
+      const firstChapter = chapters[0];
+      const firstChapterParsed = parseEntryId(firstChapter.id);
+
+      // Build chapter list for navigation
+      const chapterList = chapters.map((ch) => {
+        const p = parseEntryId(ch.id);
+        return {
+          slug: p.chapterSlug!,
+          title: ch.data.title,
+          order: p.chapterOrder!,
+          url: getChapterUrl(
+            locale,
+            category,
+            topic,
+            courseSlug,
+            p.chapterSlug,
+            p.chapterOrder === 1
+          ),
+        };
+      });
+
+      const availableLocales = Array.from(
+        new Set([
+          ...Array.from(courseData.meta.keys()),
+          ...Array.from(courseData.chapters.keys()),
+        ])
+      );
+
+      paths.push({
+        params: { locale, category, topic, course: courseSlug },
+        props: {
+          category,
+          topic,
+          courseSlug,
+          meta,
+          firstChapter,
+          chapters: chapterList,
+          availableLocales,
+          isTranslated: courseData.chapters.has(locale),
+        },
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface ChapterInfo {
+  slug: string;
+  title: string;
+  order: number;
+  url: string;
+}
+
+interface Props {
+  category: string;
+  topic: string;
+  courseSlug: string;
+  meta?: Awaited<ReturnType<typeof getCollection>>[number];
+  firstChapter: Awaited<ReturnType<typeof getCollection>>[number];
+  chapters: ChapterInfo[];
+  availableLocales: string[];
+  isTranslated: boolean;
+}
+
+const { locale } = Astro.params;
+const {
+  category,
+  topic,
+  courseSlug,
+  meta,
+  firstChapter,
+  chapters,
+  availableLocales,
+  isTranslated,
+} = Astro.props;
+
+const { Content } = await render(firstChapter);
+const topicName = getTopicName(locale, topic);
+
+// Current chapter is the first one
+const currentChapter = chapters[0];
+const nextChapter = chapters.length > 1 ? chapters[1] : undefined;
+
+// Get course metadata from meta file or first chapter
+const courseTitle = meta?.data.title || firstChapter.data.title;
+const courseDescription = meta?.data.description || firstChapter.data.description;
+const difficulty = meta?.data.difficulty || firstChapter.data.difficulty;
+const readingTime = meta?.data.readingTime || firstChapter.data.readingTime;
+const objectives = meta?.data.objectives || [];
+const author = meta?.data.author || firstChapter.data.author;
+const updatedAt = meta?.data.updated_at || firstChapter.data.updated_at;
+
+// Build the path to the markdown file for GitHub edit link
+const githubEditPath = `src/content/courses/${firstChapter.id}`;
+---
+
+<BaseLayout title={`${firstChapter.data.title} - ${courseTitle}`} sidebar={true} githubEditPath={githubEditPath}>
+  <aside slot="sidebar" class="hidden lg:block">
+    <div class="sticky top-8">
+      <p class="mb-6">
+        <a
+          href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}
+          class="nav-link"
+        >
+          {t(locale, 'backTo')} {topicName}
+        </a>
+      </p>
+
+      <ChapterProgress
+        totalChapters={chapters.length}
+        courseSlug={courseSlug}
+        locale={locale}
+      />
+
+      <ChapterNav
+        chapters={chapters}
+        currentChapter={currentChapter.slug}
+        courseSlug={courseSlug}
+        locale={locale}
+      />
+    </div>
+  </aside>
+
+  <article class="prose">
+    <p class="lg:hidden mb-8">
+      <a
+        href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}
+        class="nav-link"
+      >
+        {t(locale, 'backTo')} {topicName}
+      </a>
+    </p>
+
+    <header class="mb-12">
+      <h1>{courseTitle}</h1>
+      {courseDescription && (
+        <p class="text-lg text-text-muted">{courseDescription}</p>
+      )}
+
+      {(readingTime || difficulty) && (
+        <div class="flex flex-wrap items-center gap-4 text-sm text-text-muted my-6">
+          {readingTime && (
+            <span class="inline-flex items-center gap-1.5">
+              <svg
+                class="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              {getReadingTime(locale, readingTime)}
+            </span>
+          )}
+          {difficulty && (
+            <span class="inline-flex items-center gap-1.5">
+              <svg
+                class="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              {getDifficultyLabel(locale, difficulty)}
+            </span>
+          )}
+        </div>
+      )}
+
+      {!isTranslated && (
+        <p class="text-sm text-text-subtle italic border-l-2 border-border pl-4 my-6">
+          {t(locale, 'notTranslated')}
+        </p>
+      )}
+
+      {objectives && objectives.length > 0 && (
+        <section
+          class="bg-surface p-6 rounded-lg my-8"
+          aria-labelledby="objectives-heading"
+        >
+          <h2
+            id="objectives-heading"
+            class="font-sans text-base font-semibold mt-0 mb-4"
+          >
+            {t(locale, 'whatYoullLearn')}
+          </h2>
+          <ul class="list-none pl-0 space-y-2 mb-0">
+            {objectives.map((objective) => (
+              <li class="flex items-start gap-2 mb-0">
+                <span class="text-text-muted" aria-hidden="true">-</span>
+                <span>{objective}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <!-- Mobile chapter navigation -->
+      <div class="lg:hidden my-8">
+        <ChapterProgress
+          totalChapters={chapters.length}
+          courseSlug={courseSlug}
+          locale={locale}
+        />
+        <details class="border border-border rounded-lg">
+          <summary class="p-4 cursor-pointer font-sans text-sm font-medium">
+            {t(locale, 'chapters')} ({chapters.length})
+          </summary>
+          <div class="p-4 pt-0">
+            <ChapterNav
+              chapters={chapters}
+              currentChapter={currentChapter.slug}
+              courseSlug={courseSlug}
+              locale={locale}
+            />
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <section>
+      <Content />
+    </section>
+
+    <ChapterPagination
+      nextChapter={nextChapter}
+      locale={locale}
+    />
+
+    {(author || updatedAt) && (
+      <footer class="mt-16 pt-8 border-t border-border">
+        <dl class="text-sm text-text-muted space-y-1">
+          {author && (
+            <div class="flex gap-2">
+              <dt class="font-medium">{t(locale, 'author')}:</dt>
+              <dd>{author}</dd>
+            </div>
+          )}
+          {updatedAt && (
+            <div class="flex gap-2">
+              <dt class="font-medium">{t(locale, 'lastUpdated')}:</dt>
+              <dd>{updatedAt.toLocaleDateString(locale)}</dd>
+            </div>
+          )}
+        </dl>
+      </footer>
+    )}
+  </article>
+
+  <ProgressTracker />
+</BaseLayout>

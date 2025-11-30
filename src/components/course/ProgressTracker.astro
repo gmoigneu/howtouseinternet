@@ -1,0 +1,108 @@
+---
+// Client-side progress tracking script
+// This component should be included once per page that has progress tracking
+---
+
+<script>
+  class CourseProgress {
+    private storageKey = 'courseProgress';
+
+    getProgress(courseSlug: string): Set<string> {
+      try {
+        const data = JSON.parse(
+          localStorage.getItem(this.storageKey) || '{}'
+        );
+        return new Set(data[courseSlug] || []);
+      } catch {
+        return new Set();
+      }
+    }
+
+    markCompleted(courseSlug: string, chapterSlug: string): void {
+      try {
+        const data = JSON.parse(
+          localStorage.getItem(this.storageKey) || '{}'
+        );
+        if (!data[courseSlug]) data[courseSlug] = [];
+        if (!data[courseSlug].includes(chapterSlug)) {
+          data[courseSlug].push(chapterSlug);
+        }
+        localStorage.setItem(this.storageKey, JSON.stringify(data));
+        this.updateUI(courseSlug);
+      } catch (e) {
+        console.warn('Could not save progress:', e);
+      }
+    }
+
+    updateUI(courseSlug: string): void {
+      const completed = this.getProgress(courseSlug);
+
+      // Update chapter status indicators in sidebar
+      document.querySelectorAll('[data-chapter]').forEach((el) => {
+        const chapter = el.getAttribute('data-chapter');
+        if (chapter && completed.has(chapter)) {
+          el.classList.add('completed');
+          el.setAttribute('aria-label', 'Completed');
+        }
+      });
+
+      // Update progress bar
+      const progressEl = document.querySelector(
+        '[data-course]'
+      ) as HTMLElement | null;
+      if (progressEl) {
+        const total = parseInt(progressEl.dataset.total || '0');
+        const completedCount = completed.size;
+        const percent = total > 0 ? (completedCount / total) * 100 : 0;
+
+        const bar = progressEl.querySelector('.progress-bar') as HTMLElement | null;
+        const text = progressEl.querySelector('.progress-text') as HTMLElement | null;
+
+        if (bar) {
+          bar.style.width = `${percent}%`;
+          bar.setAttribute('aria-valuenow', String(completedCount));
+        }
+        if (text) {
+          text.textContent = `${completedCount} / ${total}`;
+        }
+      }
+    }
+  }
+
+  // Initialize progress tracking
+  function initProgress() {
+    const progress = new CourseProgress();
+    const progressEl = document.querySelector('[data-course]') as HTMLElement | null;
+
+    if (!progressEl) return;
+
+    const courseSlug = progressEl.dataset.course;
+    if (!courseSlug) return;
+
+    // Update UI with current progress
+    progress.updateUI(courseSlug);
+
+    // Find current chapter from the active link
+    const currentLink = document.querySelector('[aria-current="page"]');
+    const currentChapterEl = currentLink?.querySelector('[data-chapter]');
+    const currentChapter = currentChapterEl?.getAttribute('data-chapter');
+
+    // Mark chapter as viewed after 5 seconds of reading
+    if (currentChapter) {
+      setTimeout(() => {
+        progress.markCompleted(courseSlug, currentChapter);
+      }, 5000);
+    }
+  }
+
+  // Run on page load
+  document.addEventListener('DOMContentLoaded', initProgress);
+
+  // Also run immediately in case DOMContentLoaded already fired
+  if (document.readyState !== 'loading') {
+    initProgress();
+  }
+
+  // Re-run on Astro page transitions (view transitions)
+  document.addEventListener('astro:page-load', initProgress);
+</script>

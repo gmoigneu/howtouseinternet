@@ -3,17 +3,40 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { t, getCategoryName, getTopicName } from '../../../i18n/translations';
+import { parseEntryId } from '../../../lib/courses';
+
+// Topic icons mapping
+const topicIcons: Record<string, string> = {
+  // Stay safe online
+  'passwords': '🔐',
+  'privacy': '🛡️',
+  'scams': '🎭',
+  'malware': '🦠',
+  'social-engineering': '🎯',
+  // Internet technologies
+  'how-internet-works': '🌐',
+  'browsers': '🔍',
+  'networking': '🔗',
+  'cloud': '☁️',
+  'encryption': '🔒',
+  // Artificial Intelligence
+  'getting-started-with-ai': '🤖',
+  'prompting': '💬',
+  'ai-tools': '🛠️',
+  'ai-ethics': '⚖️',
+};
 
 export async function getStaticPaths() {
   const courses = await getCollection('courses');
 
-  const categories = new Map<string, Map<string, string[]>>();
+  const categories = new Map<string, Map<string, {
+    courses: Set<string>;
+    totalChapters: number;
+  }>>();
 
   for (const course of courses) {
-    const parts = course.id.split('/');
-    if (parts.length < 4) continue;
-
-    const [category, topic, courseSlug] = parts;
+    const parsed = parseEntryId(course.id);
+    const { category, topic, courseSlug, isChapter, isMeta } = parsed;
 
     if (!categories.has(category)) {
       categories.set(category, new Map());
@@ -21,21 +44,29 @@ export async function getStaticPaths() {
     const categoryTopics = categories.get(category)!;
 
     if (!categoryTopics.has(topic)) {
-      categoryTopics.set(topic, []);
+      categoryTopics.set(topic, { courses: new Set(), totalChapters: 0 });
     }
-    const topicCourses = categoryTopics.get(topic)!;
+    const topicData = categoryTopics.get(topic)!;
+    topicData.courses.add(courseSlug);
 
-    if (!topicCourses.includes(courseSlug)) {
-      topicCourses.push(courseSlug);
+    // Count chapters for multi-chapter courses
+    if (isChapter && parsed.locale === 'en') {
+      topicData.totalChapters++;
     }
   }
 
   const paths = [];
   for (const locale of ['en', 'fr', 'es']) {
     for (const [category, topics] of categories.entries()) {
+      const topicsData = Array.from(topics.entries()).map(([topic, data]) => ({
+        slug: topic,
+        courseCount: data.courses.size,
+        chapterCount: data.totalChapters,
+      }));
+
       paths.push({
         params: { locale, category },
-        props: { category, topics },
+        props: { category, topics: topicsData },
       });
     }
   }
@@ -43,45 +74,103 @@ export async function getStaticPaths() {
   return paths;
 }
 
+interface TopicData {
+  slug: string;
+  courseCount: number;
+  chapterCount: number;
+}
+
 interface Props {
   category: string;
-  topics: Map<string, string[]>;
+  topics: TopicData[];
 }
 
 const { locale } = Astro.params;
 const { category, topics } = Astro.props;
 const categoryName = getCategoryName(locale, category);
+
+// Category descriptions
+const categoryDescriptions: Record<string, Record<string, string>> = {
+  'stay-safe-online': {
+    en: 'Learn to protect yourself and your data from online threats, scams, and privacy invasions.',
+    fr: 'Apprenez à vous protéger ainsi que vos données contre les menaces en ligne, les arnaques et les atteintes à la vie privée.',
+    es: 'Aprende a protegerte a ti y a tus datos de amenazas en línea, estafas e invasiones de privacidad.',
+  },
+  'internet-technologies': {
+    en: 'Understand how the internet works, from browsers to networking and cloud computing.',
+    fr: 'Comprenez comment fonctionne Internet, des navigateurs aux réseaux et au cloud computing.',
+    es: 'Comprende cómo funciona Internet, desde navegadores hasta redes y computación en la nube.',
+  },
+  'artificial-intelligence': {
+    en: 'Get started with AI, learn effective prompting, and understand AI ethics and safety.',
+    fr: 'Débutez avec l\'IA, apprenez à rédiger des prompts efficaces et comprenez l\'éthique et la sécurité de l\'IA.',
+    es: 'Comienza con la IA, aprende a crear prompts efectivos y comprende la ética y seguridad de la IA.',
+  },
+};
+
+const categoryDescription = categoryDescriptions[category]?.[locale] || categoryDescriptions[category]?.['en'] || '';
 ---
 
 <BaseLayout title={categoryName}>
-  <div class="max-w-[680px]">
+  <div class="max-w-4xl">
     <p class="mb-8">
       <a href={getRelativeLocaleUrl(locale, '/')} class="nav-link">
         {t(locale, 'backToHome')}
       </a>
     </p>
 
-    <h1 class="font-serif text-4xl font-bold leading-tight mb-8">
-      {categoryName}
-    </h1>
+    <header class="mb-12">
+      <h1 class="font-serif text-4xl font-semibold leading-tight mb-4">
+        {categoryName}
+      </h1>
+      {categoryDescription && (
+        <p class="text-lg text-text-muted leading-relaxed">
+          {categoryDescription}
+        </p>
+      )}
+    </header>
 
     <section>
-      <h2 class="nav-link nav-link-active mb-6">{t(locale, 'topics')}</h2>
-      <ul class="space-y-3 list-none pl-0">
-        {Array.from(topics.entries()).map(([topic, topicCourses]) => (
-          <li class="flex items-baseline gap-2">
-            <a
-              href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}
-              class="nav-link text-sm"
-            >
-              {getTopicName(locale, topic)}
-            </a>
-            <span class="text-xs text-text-subtle">
-              ({topicCourses.length} {topicCourses.length === 1 ? t(locale, 'course') : t(locale, 'courses')})
-            </span>
-          </li>
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-text-muted mb-6">
+        {t(locale, 'topics')}
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {topics.map((topic) => (
+          <a
+            href={getRelativeLocaleUrl(locale, `/${category}/${topic.slug}`)}
+            class="group block p-6 bg-surface rounded-lg border border-border hover:border-text-muted transition-colors"
+          >
+            <div class="flex items-start gap-4">
+              <span class="text-2xl" aria-hidden="true">
+                {topicIcons[topic.slug] || '📚'}
+              </span>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-sans text-lg font-semibold text-text group-hover:text-black mb-1">
+                  {getTopicName(locale, topic.slug)}
+                </h3>
+                <p class="text-sm text-text-muted">
+                  {topic.courseCount} {topic.courseCount === 1 ? t(locale, 'course') : t(locale, 'courses')}
+                  {topic.chapterCount > 0 && (
+                    <span class="text-text-subtle">
+                      {' · '}{topic.chapterCount} {t(locale, 'chapters').toLowerCase()}
+                    </span>
+                  )}
+                </p>
+              </div>
+              <svg
+                class="w-5 h-5 text-text-subtle group-hover:text-text-muted transition-colors flex-shrink-0 mt-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </a>
         ))}
-      </ul>
+      </div>
     </section>
   </div>
 </BaseLayout>
