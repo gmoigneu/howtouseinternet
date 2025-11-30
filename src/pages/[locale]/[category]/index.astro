@@ -2,8 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-
-const locales = ['en', 'fr', 'es'];
+import { t, getCategoryName, getTopicName } from '../../../i18n/translations';
 
 export async function getStaticPaths() {
   const courses = await getCollection('courses');
@@ -51,19 +50,20 @@ interface Props {
 
 const { locale } = Astro.params;
 const { category, topics } = Astro.props;
+const categoryName = getCategoryName(locale, category);
 ---
 
-<BaseLayout title={category}>
-  <h1>{category}</h1>
+<BaseLayout title={categoryName}>
+  <h1>{categoryName}</h1>
 
-  <p><a href={getRelativeLocaleUrl(locale, '/')}>← Back to home</a></p>
+  <p><a href={getRelativeLocaleUrl(locale, '/')}>{t(locale, 'backToHome')}</a></p>
 
-  <h2>Topics</h2>
+  <h2>{t(locale, 'topics')}</h2>
   <ul>
     {Array.from(topics.entries()).map(([topic, topicCourses]) => (
       <li>
-        <a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}>{topic}</a>
-        <span> ({topicCourses.length} {topicCourses.length === 1 ? 'course' : 'courses'})</span>
+        <a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}>{getTopicName(locale, topic)}</a>
+        <span> ({topicCourses.length} {topicCourses.length === 1 ? t(locale, 'course') : t(locale, 'courses')})</span>
       </li>
     ))}
   </ul>

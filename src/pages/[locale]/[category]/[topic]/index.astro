@@ -2,34 +2,41 @@
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import { t, getCategoryName, getTopicName } from '../../../../i18n/translations';
 
 export async function getStaticPaths() {
-  const courses = await getCollection('courses');
+  const allCourses = await getCollection('courses');
 
-  const topics = new Map<string, { category: string; topic: string; courses: Array<{ slug: string; title: string }> }>();
+  // Group courses by category/topic and locale
+  const topicsMap = new Map<string, {
+    category: string;
+    topic: string;
+    coursesByLocale: Map<string, Array<{ slug: string; title: string }>>;
+  }>();
 
-  for (const course of courses) {
+  for (const course of allCourses) {
     const parts = course.id.split('/');
     if (parts.length < 4) continue;
 
     const [category, topic, courseSlug, courseLocale] = parts;
-
-    // Only use English courses for the listing (as fallback titles)
-    if (courseLocale !== 'en') continue;
-
     const key = `${category}/${topic}`;
 
-    if (!topics.has(key)) {
-      topics.set(key, { category, topic, courses: [] });
+    if (!topicsMap.has(key)) {
+      topicsMap.set(key, { category, topic, coursesByLocale: new Map() });
     }
 
-    const topicData = topics.get(key)!;
-    topicData.courses.push({ slug: courseSlug, title: course.data.title });
+    const topicData = topicsMap.get(key)!;
+    if (!topicData.coursesByLocale.has(courseLocale)) {
+      topicData.coursesByLocale.set(courseLocale, []);
+    }
+    topicData.coursesByLocale.get(courseLocale)!.push({ slug: courseSlug, title: course.data.title });
   }
 
   const paths = [];
   for (const locale of ['en', 'fr', 'es']) {
-    for (const { category, topic, courses } of topics.values()) {
+    for (const { category, topic, coursesByLocale } of topicsMap.values()) {
+      // Use locale-specific titles if available, fallback to English
+      const courses = coursesByLocale.get(locale) || coursesByLocale.get('en') || [];
       paths.push({
         params: { locale, category, topic },
         props: { category, topic, courses },
@@ -48,14 +55,16 @@ interface Props {
 
 const { locale } = Astro.params;
 const { category, topic, courses } = Astro.props;
+const categoryName = getCategoryName(locale, category);
+const topicName = getTopicName(locale, topic);
 ---
 
-<BaseLayout title={topic}>
-  <h1>{topic}</h1>
+<BaseLayout title={topicName}>
+  <h1>{topicName}</h1>
 
-  <p><a href={getRelativeLocaleUrl(locale, `/${category}`)}>← Back to {category}</a></p>
+  <p><a href={getRelativeLocaleUrl(locale, `/${category}`)}>{t(locale, 'backTo')} {categoryName}</a></p>
 
-  <h2>Courses</h2>
+  <h2>{t(locale, 'courses')}</h2>
   <ul>
     {courses.map((course) => (
       <li>

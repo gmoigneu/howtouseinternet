@@ -65,7 +65,40 @@ Content...
 - **Typography**: Serif fonts for headings, sans-serif for body text
 - **Readability**: High contrast, generous line height, appropriate font sizes
 - **Layout**: Clean, distraction-free, focused on content
-- **Accessibility**: WCAG compliant, keyboard navigable
+
+## Accessibility (CRITICAL)
+
+This project must be 100% accessible. Follow WCAG 2.1 Level AA and ARIA best practices.
+
+### Key Requirements
+
+- **Semantic HTML first**: Use native elements (`<nav>`, `<main>`, `<button>`) before ARIA
+- **Keyboard navigation**: All interactive elements must be keyboard accessible
+- **Focus indicators**: Visible focus states on all focusable elements
+- **Skip links**: Include "Skip to main content" link
+- **Heading hierarchy**: Single h1 per page, logical heading order
+- **Language attributes**: Set `lang` on `<html>`, use `hreflang` for language links
+- **Color contrast**: Minimum 4.5:1 for text, 3:1 for large text
+- **Alt text**: All images must have appropriate alt text
+
+### ARIA Guidelines
+
+```html
+<!-- Navigation landmarks -->
+<nav aria-label="Main navigation">
+<nav aria-label="Language selector">
+
+<!-- Language links -->
+<a href="/fr/..." lang="fr" hreflang="fr">Français</a>
+
+<!-- Current page -->
+<a href="..." aria-current="page">Current Page</a>
+
+<!-- Course chapter navigation -->
+<nav aria-label="Course chapters">
+```
+
+See `specs/accessibility.md` for complete guidelines.
 
 ## Coding Standards
 
@@ -90,10 +123,33 @@ Content...
 
 ## Internationalization
 
-- Default locale: English (`en`)
-- Content files named by locale code (e.g., `en.md`, `fr.md`, `es.md`)
-- UI strings in translation files
-- RTL support for applicable languages
+Astro's built-in i18n routing is configured with locale-prefixed URLs.
+
+### Configuration
+
+- Locales: `en` (default), `fr`, `es`
+- All URLs include locale prefix (`/en/`, `/fr/`, `/es/`)
+- Root `/` redirects to `/en/`
+
+### Translations
+
+All translations are in `src/i18n/translations.ts`:
+
+```typescript
+import { t, getCategoryName, getTopicName } from '../i18n/translations';
+
+t(locale, 'home')                    // UI strings
+getCategoryName(locale, 'ai')        // Category names
+getTopicName(locale, 'passwords')    // Topic names
+```
+
+### Adding New Translations
+
+1. Add the locale to `astro.config.mjs` i18n.locales
+2. Add translations to `src/i18n/translations.ts`
+3. Create locale file in course folder (e.g., `de.md`)
+
+See `specs/internationalization.md` for complete guidelines.
 
 ## File Naming Conventions
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The website supports multiple languages to make content accessible globally.
+The website supports multiple languages to make content accessible globally. Astro's built-in i18n routing is configured with locale-prefixed URLs.
 
 ## Supported Locales
 
@@ -20,87 +20,132 @@ The website supports multiple languages to make content accessible globally.
 - Chinese Simplified (`zh`)
 - Japanese (`ja`)
 
+## Astro i18n Configuration
+
+```javascript
+// astro.config.mjs
+export default defineConfig({
+  i18n: {
+    locales: ['en', 'fr', 'es'],
+    defaultLocale: 'en',
+    routing: {
+      prefixDefaultLocale: true,
+    },
+  },
+});
+```
+
 ## URL Structure
 
-Locale is the first segment of the URL path:
+Locale is the first segment of the URL path. Slugs remain in English for URL stability:
 
 ```
 /{locale}/{category}/{topic}/{course}
 ```
 
 **Examples:**
-- `/en/security/passwords/creating-strong-passwords`
-- `/fr/securite/mots-de-passe/creer-mots-de-passe-forts`
+- `/en/ai/getting-better-at-using-ai/efficient-prompting`
+- `/fr/ai/getting-better-at-using-ai/efficient-prompting`
+- `/es/ai/getting-better-at-using-ai/efficient-prompting`
 
 ### Default Locale Handling
 
-- Default locale (`en`) may optionally omit the locale prefix
-- `/security/passwords/...` redirects to `/en/security/passwords/...`
+- All URLs include locale prefix (including default `en`)
+- Root `/` redirects to `/en/`
+- This ensures consistent URLs across all languages
 
-## Content Translation
+## Content Structure
 
 ### Directory Structure
 
-Each locale has its own content directory:
+Courses are organized by category/topic/course, with locale-specific markdown files:
 
 ```
 src/
 └── content/
-    ├── en/
-    │   └── security/
-    │       └── passwords/
-    │           └── creating-strong-passwords.md
-    ├── fr/
-    │   └── securite/
-    │       └── mots-de-passe/
-    │           └── creer-mots-de-passe-forts.md
-    └── es/
-        └── seguridad/
-            └── contrasenas/
-                └── crear-contrasenas-seguras.md
+    └── courses/
+        └── [category]/
+            └── [topic]/
+                └── [course-slug]/
+                    ├── en.md
+                    ├── fr.md
+                    └── es.md
 ```
 
-### Translation Keys
+**Example:**
+```
+src/content/courses/ai/getting-better-at-using-ai/efficient-prompting/
+├── en.md
+├── fr.md
+└── es.md
+```
 
-Category and topic names are translated:
+### Content Collection
 
-| English | French | Spanish |
-|---------|--------|---------|
-| security | securite | seguridad |
-| passwords | mots-de-passe | contrasenas |
-| technology | technologie | tecnologia |
+Courses are defined as an Astro content collection in `src/content.config.ts`:
+
+```typescript
+const courses = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/courses' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    keywords: z.array(z.string()),
+    objectives: z.array(z.string()),
+    updated_at: z.coerce.date(),
+    author: z.string(),
+  }),
+});
+```
 
 ## UI Translations
 
 ### Location
 
+All translations are in a single TypeScript file:
+
 ```
 src/
 └── i18n/
-    ├── en.json
-    ├── fr.json
-    └── es.json
+    └── translations.ts
 ```
 
-### Format
+### Structure
 
-```json
-{
-  "nav": {
-    "home": "Home",
-    "courses": "Courses",
-    "about": "About"
+```typescript
+export const translations = {
+  en: {
+    categories: {
+      ai: 'AI',
+      security: 'Security',
+    },
+    topics: {
+      'getting-better-at-using-ai': 'Getting better at using AI',
+    },
+    ui: {
+      home: 'Home',
+      backToHome: '← Back to home',
+      courses: 'Courses',
+      chapters: 'Chapters',
+      // ...
+    },
   },
-  "course": {
-    "difficulty": "Difficulty",
-    "estimatedTime": "Estimated time",
-    "chapters": "Chapters"
-  },
-  "common": {
-    "readMore": "Read more",
-    "backTo": "Back to"
-  }
-}
+  fr: { /* ... */ },
+  es: { /* ... */ },
+};
+```
+
+### Helper Functions
+
+```typescript
+// Get UI string
+t(locale, 'home') // → "Accueil" (for fr)
+
+// Get localized category name
+getCategoryName(locale, 'ai') // → "IA" (for fr)
+
+// Get localized topic name
+getTopicName(locale, 'getting-better-at-using-ai') // → "Mieux utiliser l'IA" (for fr)
 ```
 
 ## Language Switcher

@@ -33,9 +33,43 @@ Category
 
 The website supports multiple languages to make content accessible globally.
 
+### Supported Languages
+
+- English (default)
+- French
+- Spanish
+
+### URL Structure
+
+All URLs are prefixed with locale code:
+- `/en/ai/getting-better-at-using-ai/efficient-prompting`
+- `/fr/ai/getting-better-at-using-ai/efficient-prompting`
+
+### Translation System
+
+- **Content**: Each course has locale-specific markdown files (`en.md`, `fr.md`, `es.md`)
+- **UI Strings**: Centralized in `src/i18n/translations.ts`
+- **Category/Topic Names**: Localized display names with stable English URL slugs
+
+### Adding a New Language
+
+1. Add locale to `astro.config.mjs`
+2. Add translations to `src/i18n/translations.ts`
+3. Create translated course files (e.g., `de.md`)
+
 ## Technology
 
 Built with [Astro](https://astro.build/) as a static site generator for fast, accessible pages.
+
+## Accessibility
+
+This project is committed to being 100% accessible, following WCAG 2.1 Level AA guidelines and ARIA best practices.
+
+- Semantic HTML structure
+- Keyboard navigation support
+- Screen reader compatible
+- High contrast colors
+- Skip links and proper focus management
 
 ## Design Philosophy
 

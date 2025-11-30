@@ -2,6 +2,7 @@
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import { t, getTopicName } from '../../../../i18n/translations';
 
 export async function getStaticPaths() {
   const courses = await getCollection('courses');
@@ -61,11 +62,15 @@ interface Props {
 
 const { locale } = Astro.params;
 const { category, topic, courseSlug, course, availableLocales, isTranslated } = Astro.props;
-const { Content } = await render(course);
+const { Content, headings } = await render(course);
+const topicName = getTopicName(locale, topic);
+
+// Get chapter headings (h2)
+const chapters = headings.filter(h => h.depth === 2);
 ---
 
 <BaseLayout title={course.data.title}>
-  <p><a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}>← Back to {topic}</a></p>
+  <p><a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}>{t(locale, 'backTo')} {topicName}</a></p>
 
   <article>
     <header>
@@ -73,12 +78,12 @@ const { Content } = await render(course);
       <p>{course.data.description}</p>
 
       {!isTranslated && (
-        <p><em>This course is not yet available in your language. Showing English version.</em></p>
+        <p><em>{t(locale, 'notTranslated')}</em></p>
       )}
 
       {course.data.objectives && course.data.objectives.length > 0 && (
         <section>
-          <h2>What you'll learn</h2>
+          <h2>{t(locale, 'whatYoullLearn')}</h2>
           <ul>
             {course.data.objectives.map((objective) => (
               <li>{objective}</li>
@@ -86,13 +91,24 @@ const { Content } = await render(course);
           </ul>
         </section>
       )}
+
+      {chapters.length > 0 && (
+        <nav>
+          <h2>{t(locale, 'chapters')}</h2>
+          <ol>
+            {chapters.map((chapter) => (
+              <li><a href={`#${chapter.slug}`}>{chapter.text}</a></li>
+            ))}
+          </ol>
+        </nav>
+      )}
     </header>
 
     <Content />
 
     <footer>
-      <p>Author: {course.data.author}</p>
-      <p>Last updated: {course.data.updated_at.toLocaleDateString()}</p>
+      <p>{t(locale, 'author')}: {course.data.author}</p>
+      <p>{t(locale, 'lastUpdated')}: {course.data.updated_at.toLocaleDateString(locale)}</p>
     </footer>
   </article>
 </BaseLayout>
