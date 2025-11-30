@@ -18,29 +18,37 @@ How To Use Internet is a knowledge website built with Astro, providing free cour
 ```
 src/
 └── content/
-    └── [locale]/
+    └── courses/
         └── [category]/
             └── [topic]/
-                └── [course].md
+                └── [course-slug]/
+                    ├── en.md
+                    ├── fr.md
+                    └── es.md
 ```
 
 ### Hierarchy
 
 1. **Category**: Broad subject area (e.g., "security", "technology", "ai")
 2. **Topic**: Specific subject within category (e.g., "passwords", "networking")
-3. **Course**: Single markdown file containing multiple chapters
+3. **Course**: Folder containing locale-specific markdown files
 
 ### Course File Format
 
-Courses are single markdown files with frontmatter and chapter sections:
+Courses are markdown files named by locale (e.g., `en.md`, `fr.md`) with frontmatter and chapter sections:
 
 ```markdown
 ---
 title: "Course Title"
 description: "Course description"
-category: "security"
-topic: "passwords"
-locale: "en"
+keywords:
+  - keyword1
+  - keyword2
+objectives:
+  - Learning objective 1
+  - Learning objective 2
+updated_at: 2024-01-15
+author: "Author Name"
 ---
 
 ## Chapter 1: Introduction
@@ -83,7 +91,7 @@ Content...
 ## Internationalization
 
 - Default locale: English (`en`)
-- Content files organized by locale
+- Content files named by locale code (e.g., `en.md`, `fr.md`, `es.md`)
 - UI strings in translation files
 - RTL support for applicable languages
 
@@ -115,3 +123,4 @@ pnpm preview  # Preview production build
 - All content should be original or properly attributed
 - Focus on accessibility and inclusivity
 - Keep the codebase simple and maintainable
+- You have access to the Chrome MCP to test the website if needed

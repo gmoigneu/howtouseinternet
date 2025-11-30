@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const courses = await getCollection('courses');
+
+  const courseMap = new Map<string, typeof courses>();
+
+  for (const course of courses) {
+    const parts = course.id.split('/');
+    if (parts.length < 4) continue;
+
+    const [category, topic, courseSlug] = parts;
+    const key = `${category}/${topic}/${courseSlug}`;
+
+    if (!courseMap.has(key)) {
+      courseMap.set(key, []);
+    }
+    courseMap.get(key)!.push(course);
+  }
+
+  return Array.from(courseMap.entries()).map(([key, locales]) => {
+    const [category, topic, courseSlug] = key.split('/');
+    const englishCourse = locales.find(c => c.id.endsWith('/en')) || locales[0];
+
+    return {
+      params: { category, topic, course: courseSlug },
+      props: {
+        category,
+        topic,
+        courseSlug,
+        course: englishCourse,
+        availableLocales: locales.map(c => {
+          const parts = c.id.split('/');
+          return parts[parts.length - 1];
+        }),
+      },
+    };
+  });
+}
+
+interface Props {
+  category: string;
+  topic: string;
+  courseSlug: string;
+  course: Awaited<ReturnType<typeof getCollection>>[number];
+  availableLocales: string[];
+}
+
+const { category, topic, courseSlug, course, availableLocales } = Astro.props;
+const { Content } = await render(course);
+---
+
+<BaseLayout title={course.data.title}>
+  <p><a href={`/${category}/${topic}`}>← Back to {topic}</a></p>
+
+  <article>
+    <header>
+      <h1>{course.data.title}</h1>
+      <p>{course.data.description}</p>
+
+      {course.data.objectives && course.data.objectives.length > 0 && (
+        <section>
+          <h2>What you'll learn</h2>
+          <ul>
+            {course.data.objectives.map((objective) => (
+              <li>{objective}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {availableLocales.length > 1 && (
+        <p>
+          Available in: {availableLocales.map((locale, i) => (
+            <>
+              {i > 0 && ', '}
+              <a href={`/${category}/${topic}/${courseSlug}/${locale}`}>{locale.toUpperCase()}</a>
+            </>
+          ))}
+        </p>
+      )}
+    </header>
+
+    <Content />
+
+    <footer>
+      <p>Author: {course.data.author}</p>
+      <p>Last updated: {course.data.updated_at.toLocaleDateString()}</p>
+    </footer>
+  </article>
+</BaseLayout>

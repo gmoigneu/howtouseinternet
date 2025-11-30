@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const courses = await getCollection('courses');
+
+  const categories = new Map<string, Map<string, string[]>>();
+
+  for (const course of courses) {
+    const parts = course.id.split('/');
+    if (parts.length < 3) continue;
+
+    const [category, topic, courseSlug] = parts;
+
+    if (!categories.has(category)) {
+      categories.set(category, new Map());
+    }
+    const categoryTopics = categories.get(category)!;
+
+    if (!categoryTopics.has(topic)) {
+      categoryTopics.set(topic, []);
+    }
+    const topicCourses = categoryTopics.get(topic)!;
+
+    if (!topicCourses.includes(courseSlug)) {
+      topicCourses.push(courseSlug);
+    }
+  }
+
+  return Array.from(categories.entries()).map(([category, topics]) => ({
+    params: { category },
+    props: { category, topics },
+  }));
+}
+
+interface Props {
+  category: string;
+  topics: Map<string, string[]>;
+}
+
+const { category, topics } = Astro.props;
+---
+
+<BaseLayout title={category}>
+  <h1>{category}</h1>
+
+  <p><a href="/">← Back to home</a></p>
+
+  <h2>Topics</h2>
+  <ul>
+    {Array.from(topics.entries()).map(([topic, topicCourses]) => (
+      <li>
+        <a href={`/${category}/${topic}`}>{topic}</a>
+        <span> ({topicCourses.length} {topicCourses.length === 1 ? 'course' : 'courses'})</span>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

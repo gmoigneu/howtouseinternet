@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const courses = await getCollection('courses');
+
+  return courses.map((course) => {
+    const parts = course.id.split('/');
+    if (parts.length < 4) return null;
+
+    const [category, topic, courseSlug, locale] = parts;
+
+    return {
+      params: { category, topic, course: courseSlug, locale },
+      props: { category, topic, courseSlug, locale, course },
+    };
+  }).filter(Boolean);
+}
+
+interface Props {
+  category: string;
+  topic: string;
+  courseSlug: string;
+  locale: string;
+  course: Awaited<ReturnType<typeof getCollection>>[number];
+}
+
+const { category, topic, courseSlug, locale, course } = Astro.props;
+const { Content } = await render(course);
+
+// Get all locales for this course
+const allCourses = await getCollection('courses');
+const availableLocales = allCourses
+  .filter(c => c.id.startsWith(`${category}/${topic}/${courseSlug}/`))
+  .map(c => {
+    const parts = c.id.split('/');
+    return parts[parts.length - 1];
+  });
+---
+
+<BaseLayout title={course.data.title}>
+  <p><a href={`/${category}/${topic}`}>← Back to {topic}</a></p>
+
+  <article>
+    <header>
+      <h1>{course.data.title}</h1>
+      <p>{course.data.description}</p>
+
+      {course.data.objectives && course.data.objectives.length > 0 && (
+        <section>
+          <h2>What you'll learn</h2>
+          <ul>
+            {course.data.objectives.map((objective) => (
+              <li>{objective}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {availableLocales.length > 1 && (
+        <p>
+          Available in: {availableLocales.map((loc, i) => (
+            <>
+              {i > 0 && ', '}
+              {loc === locale ? (
+                <strong>{loc.toUpperCase()}</strong>
+              ) : (
+                <a href={`/${category}/${topic}/${courseSlug}/${loc}`}>{loc.toUpperCase()}</a>
+              )}
+            </>
+          ))}
+        </p>
+      )}
+    </header>
+
+    <Content />
+
+    <footer>
+      <p>Author: {course.data.author}</p>
+      <p>Last updated: {course.data.updated_at.toLocaleDateString()}</p>
+    </footer>
+  </article>
+</BaseLayout>

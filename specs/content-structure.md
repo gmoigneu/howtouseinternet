@@ -34,21 +34,29 @@ A complete learning unit containing multiple chapters. Each course is a single m
 ```
 src/
 └── content/
-    └── [locale]/
+    └── courses/
         └── [category]/
             └── [topic]/
-                └── [course-slug].md
+                └── [course-slug]/
+                    ├── en.md
+                    ├── fr.md
+                    └── es.md
 ```
 
 **Example:**
 ```
 src/
 └── content/
-    └── en/
+    └── courses/
         └── security/
             └── passwords/
-                ├── creating-strong-passwords.md
-                └── password-managers.md
+                ├── creating-strong-passwords/
+                │   ├── en.md
+                │   ├── fr.md
+                │   └── es.md
+                └── password-managers/
+                    ├── en.md
+                    └── fr.md
 ```
 
 ## Course File Format
@@ -59,13 +67,16 @@ src/
 ---
 title: "Creating Strong Passwords"
 description: "Learn how to create and remember secure passwords"
-category: "security"
-topic: "passwords"
-locale: "en"
+keywords:
+  - passwords
+  - security
+  - authentication
+objectives:
+  - Understand why strong passwords matter
+  - Learn techniques for creating memorable yet secure passwords
+  - Know when to use a password manager
+updated_at: 2024-01-15
 author: "Contributor Name"
-lastUpdated: "2024-01-15"
-difficulty: "beginner"  # beginner | intermediate | advanced
-estimatedTime: "15 min"
 ---
 ```
 
@@ -114,18 +125,16 @@ URLs follow the content hierarchy:
 | Field | Type | Description |
 |-------|------|-------------|
 | title | string | Course title |
-| description | string | Brief course description |
-| category | string | Category slug |
-| topic | string | Topic slug |
-| locale | string | ISO 639-1 language code |
+| description | string | Brief course description (1-2 sentences) |
+| keywords | array | List of keywords for search and SEO |
+| objectives | array | Learning objectives (what the reader will learn) |
+| updated_at | date | Last modification date (YYYY-MM-DD) |
+| author | string | Content author name |
 
 ### Optional Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
-| author | string | Content author |
-| lastUpdated | date | Last modification date |
 | difficulty | enum | beginner, intermediate, advanced |
 | estimatedTime | string | Estimated reading time |
 | prerequisites | array | Required prior courses |
-| tags | array | Search/filter tags |

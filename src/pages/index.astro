@@ -1,16 +1,49 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
+const courses = await getCollection('courses');
+
+// Build category -> topic -> courses structure
+const structure = new Map<string, Map<string, string[]>>();
+
+for (const course of courses) {
+  const parts = course.id.split('/');
+  if (parts.length < 3) continue;
+
+  const [category, topic, courseSlug] = parts;
+
+  if (!structure.has(category)) {
+    structure.set(category, new Map());
+  }
+  const categoryTopics = structure.get(category)!;
+
+  if (!categoryTopics.has(topic)) {
+    categoryTopics.set(topic, []);
+  }
+  const topicCourses = categoryTopics.get(topic)!;
+
+  if (!topicCourses.includes(courseSlug)) {
+    topicCourses.push(courseSlug);
+  }
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Home">
+  <h1>How To Use Internet</h1>
+  <p>Free courses about internet concepts, security, and AI usage.</p>
+
+  {Array.from(structure.entries()).map(([category, topics]) => (
+    <section>
+      <h2><a href={`/${category}`}>{category}</a></h2>
+      <ul>
+        {Array.from(topics.entries()).map(([topic, topicCourses]) => (
+          <li>
+            <a href={`/${category}/${topic}`}>{topic}</a>
+            <span> ({topicCourses.length} {topicCourses.length === 1 ? 'course' : 'courses'})</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>
