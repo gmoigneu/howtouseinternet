@@ -1,0 +1,28 @@
+# Upsun configuration, generated using AI at: 2025-11-30T12:13:38.567Z
+# AI can make mistakes. Please modify this file to suit your needs.
+applications:
+  howtouseinternet:
+    type: nodejs:24
+
+    build:
+      flavor: none
+
+    hooks:
+      build: |
+        set -ex
+        pnpm install --frozen-lockfile
+        pnpm run build
+
+    web:
+      commands:
+        start: sleep infinity
+
+      locations:
+        /:
+          root: dist
+          index: [index.html]
+          scripts: false
+          expires: 24h
+          rules:
+            '\.(css|js|gif|jpe?g|png|svg|webp)$':
+              expires: 4w
