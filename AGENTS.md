@@ -39,7 +39,7 @@ Courses are markdown files named by locale (e.g., `en.md`, `fr.md`) with frontma
 
 ```markdown
 ---
-title: "Course Title"
+title: "Course title in sentence case"
 description: "Course description"
 keywords:
   - keyword1
@@ -55,10 +55,17 @@ author: "Author Name"
 
 Content...
 
-## Chapter 2: Next Topic
+## Chapter 2: Next topic
 
 Content...
 ```
+
+### Title Capitalization
+
+All titles and headings use **sentence case** (not title case):
+- Capitalize only the first word and proper nouns
+- Acronyms remain uppercase (e.g., "AI", "DNS")
+- Example: "Understanding how AI actually works" (not "Understanding How AI Actually Works")
 
 ## Design Guidelines
 

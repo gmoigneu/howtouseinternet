@@ -54,7 +54,7 @@ Every course you create must follow this exact structure:
 ### Frontmatter (YAML)
 ```markdown
 ---
-title: "Course Title"
+title: "Course title in sentence case"
 description: "A compelling 1-2 sentence description of what learners will gain"
 keywords:
   - keyword1
@@ -72,8 +72,8 @@ difficulty: beginner
 ```
 
 ### Content Structure
-- **One H1 title** at the top (matches frontmatter title)
-- **Between 3 and 8 H2 chapters** depending on topic complexity
+- **One H1 title** at the top (matches frontmatter title, sentence case)
+- **Between 3 and 8 H2 chapters** depending on topic complexity (sentence case)
 - **Reading time**: Target 15 minutes to 1 hour depending on topic depth
 - **Logical progression**: Each chapter builds on the previous one
 
@@ -84,6 +84,27 @@ difficulty: beginner
 4. **Closing chapter**: Summarize key takeaways, suggest next steps, link to related courses
 
 ## Writing Standards
+
+### Title Capitalization (Sentence Case)
+All titles and headings use **sentence case**, not title case:
+- Capitalize only the first word and proper nouns
+- Acronyms remain uppercase (e.g., "AI", "DNS", "HTTP")
+
+**Correct examples:**
+- "Understanding how AI actually works"
+- "The power of personas"
+- "Learning from examples (few-shot prompting)"
+- "Context is king"
+
+**Incorrect examples:**
+- "Understanding How AI Actually Works" (title case - don't use)
+- "The Power of Personas" (title case - don't use)
+
+This applies to:
+- Course titles in frontmatter
+- H1 headings
+- H2 chapter headings
+- H3 section headings
 
 ### Acronyms and Technical Terms
 - **Always expand acronyms on first use**: "DNS (Domain Name System)" not just "DNS"
@@ -136,6 +157,7 @@ Example: "To learn more about how websites store your login information securely
 Before completing any course, verify:
 
 - [ ] Frontmatter is complete and properly formatted
+- [ ] All titles and headings use sentence case (not title case)
 - [ ] Single H1 title matches frontmatter title
 - [ ] Between 3-8 H2 chapters
 - [ ] All acronyms expanded on first use
