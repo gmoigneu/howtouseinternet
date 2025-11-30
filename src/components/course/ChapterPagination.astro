@@ -4,6 +4,7 @@ import { t } from '../../i18n/translations';
 interface ChapterLink {
   slug: string;
   title: string;
+  order: number;
   url: string;
 }
 
@@ -14,14 +15,25 @@ interface Props {
 }
 
 const { prevChapter, nextChapter, locale } = Astro.props;
+
+// Format chapter number with leading zero
+const formatChapterNumber = (order: number) => order.toString().padStart(2, '0');
+
+// Truncate title to 35 characters
+const truncateTitle = (title: string, maxLength: number = 35) => {
+  if (title.length <= maxLength) return title;
+  return title.slice(0, maxLength).trim() + '…';
+};
 ---
 
 <nav aria-label="Chapter navigation" class="chapter-pagination">
   {
     prevChapter ? (
-      <a href={prevChapter.url} class="pagination-link pagination-prev">
+      <a href={prevChapter.url} class="pagination-card pagination-prev">
         <span class="pagination-label">{t(locale, 'previousChapter')}</span>
-        <span class="pagination-title">{prevChapter.title}</span>
+        <span class="pagination-chapter" title={prevChapter.title}>
+          {formatChapterNumber(prevChapter.order)}. {truncateTitle(prevChapter.title)}
+        </span>
       </a>
     ) : (
       <div />
@@ -30,9 +42,11 @@ const { prevChapter, nextChapter, locale } = Astro.props;
 
   {
     nextChapter ? (
-      <a href={nextChapter.url} class="pagination-link pagination-next">
+      <a href={nextChapter.url} class="pagination-card pagination-next">
         <span class="pagination-label">{t(locale, 'nextChapter')}</span>
-        <span class="pagination-title">{nextChapter.title}</span>
+        <span class="pagination-chapter" title={nextChapter.title}>
+          {formatChapterNumber(nextChapter.order)}. {truncateTitle(nextChapter.title)}
+        </span>
       </a>
     ) : (
       <div />
@@ -44,23 +58,29 @@ const { prevChapter, nextChapter, locale } = Astro.props;
   .chapter-pagination {
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid var(--color-border);
   }
 
-  .pagination-link {
+  .pagination-card {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
     text-decoration: none;
-    color: var(--color-text-muted);
-    transition: color 0.15s ease;
-    max-width: 45%;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    width: 33.333%;
+    min-width: 0;
   }
 
-  .pagination-link:hover {
-    color: var(--color-text);
+  .pagination-card:hover {
+    border-color: var(--color-text-muted);
+    background-color: var(--color-background);
   }
 
   .pagination-prev {
@@ -70,6 +90,7 @@ const { prevChapter, nextChapter, locale } = Astro.props;
   .pagination-next {
     align-items: flex-end;
     text-align: right;
+    margin-left: auto;
   }
 
   .pagination-label {
@@ -77,17 +98,31 @@ const { prevChapter, nextChapter, locale } = Astro.props;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 0.25rem;
+    color: var(--color-text-muted);
   }
 
-  .pagination-title {
-    font-family: var(--font-serif);
+  .pagination-chapter {
+    font-family: var(--font-sans);
     font-size: 1rem;
     font-weight: 500;
     color: var(--color-text);
+    line-height: 1.3;
   }
 
-  .pagination-link:hover .pagination-title {
-    text-decoration: underline;
+  @media (max-width: 640px) {
+    .chapter-pagination {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .pagination-card {
+      width: 100%;
+    }
+
+    .pagination-next {
+      align-items: flex-start;
+      text-align: left;
+      margin-left: 0;
+    }
   }
 </style>
