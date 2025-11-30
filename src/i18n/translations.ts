@@ -21,6 +21,7 @@ export const translations: Record<Locale, Translation> = {
       'networking': 'Networking basics',
       'cloud': 'Cloud computing',
       'encryption': 'Encryption',
+      'https-encryption': 'Encryption & certificates',
       // Artificial Intelligence
       'getting-started-with-ai': 'Getting started with AI',
       'prompting': 'Effective prompting',
@@ -65,6 +66,10 @@ export const translations: Record<Locale, Translation> = {
       nextChapter: 'Next',
       chapterCompleted: 'Completed',
       startCourse: 'Start course',
+      privacy: 'Privacy',
+      terms: 'Terms',
+      contact: 'Contact',
+      hostedBy: 'hosted by',
     },
   },
   fr: {
@@ -86,6 +91,7 @@ export const translations: Record<Locale, Translation> = {
       'networking': 'Bases des réseaux',
       'cloud': 'Cloud computing',
       'encryption': 'Chiffrement',
+      'https-encryption': 'Chiffrement & certificats',
       // Artificial Intelligence
       'getting-started-with-ai': 'Débuter avec l\'IA',
       'prompting': 'Rédiger des prompts efficaces',
@@ -130,6 +136,10 @@ export const translations: Record<Locale, Translation> = {
       nextChapter: 'Suivant',
       chapterCompleted: 'Terminé',
       startCourse: 'Commencer le cours',
+      privacy: 'Confidentialité',
+      terms: 'Conditions',
+      contact: 'Contact',
+      hostedBy: 'hébergé par',
     },
   },
   es: {
@@ -151,6 +161,7 @@ export const translations: Record<Locale, Translation> = {
       'networking': 'Conceptos básicos de redes',
       'cloud': 'Computación en la nube',
       'encryption': 'Cifrado',
+      'https-encryption': 'Cifrado & certificados',
       // Artificial Intelligence
       'getting-started-with-ai': 'Primeros pasos con la IA',
       'prompting': 'Prompts efectivos',
@@ -195,6 +206,10 @@ export const translations: Record<Locale, Translation> = {
       nextChapter: 'Siguiente',
       chapterCompleted: 'Completado',
       startCourse: 'Iniciar curso',
+      privacy: 'Privacidad',
+      terms: 'Términos',
+      contact: 'Contacto',
+      hostedBy: 'alojado por',
     },
   },
 };
@@ -240,6 +255,10 @@ interface Translation {
     nextChapter: string;
     chapterCompleted: string;
     startCourse: string;
+    privacy: string;
+    terms: string;
+    contact: string;
+    hostedBy: string;
   };
 }
 

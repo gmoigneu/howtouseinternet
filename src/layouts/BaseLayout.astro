@@ -94,7 +94,7 @@ const githubEditUrl = githubEditPath ? `${githubRepoUrl}/edit/main/${githubEditP
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p class="text-sm text-text-muted">
-            &copy; {new Date().getFullYear()} <span class="text-lg font-extrabold text-text no-underline" style="font-family: 'Nunito', sans-serif;">how to use internet</span> - hosted by <a href="https://upsun.com" class="text-sm text-text-muted hover:text-text no-underline">Upsun</a>
+            &copy; {new Date().getFullYear()} <span class="text-lg font-extrabold text-text no-underline" style="font-family: 'Nunito', sans-serif;">how to use internet</span> - {t(currentLocale, 'hostedBy')} <a href="https://upsun.com" class="text-sm text-text-muted hover:text-text no-underline">Upsun</a>
           </p>
           <nav aria-label="Footer links" class="flex items-center gap-6">
             {githubEditUrl ? (
@@ -132,19 +132,19 @@ const githubEditUrl = githubEditPath ? `${githubRepoUrl}/edit/main/${githubEditP
               href="/privacy"
               class="text-sm text-text-muted hover:text-text no-underline"
             >
-              Privacy
+              {t(currentLocale, 'privacy')}
             </a>
             <a
               href="/terms"
               class="text-sm text-text-muted hover:text-text no-underline"
             >
-              Terms
+              {t(currentLocale, 'terms')}
             </a>
             <a
               href="mailto:hello@howtouseinternet.com"
               class="text-sm text-text-muted hover:text-text no-underline"
             >
-              Contact
+              {t(currentLocale, 'contact')}
             </a>
           </nav>
         </div>
