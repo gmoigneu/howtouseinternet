@@ -221,3 +221,45 @@ We're the friend who happens to know a lot about this stuff and genuinely wants 
 |------|--------|
 | 2025-11-30 | Initial version created |
 | 2025-11-30 | Refocused on digital literacy mission; added personality and humor |
+
+
+## Examples
+
+### LinkedIn post:
+
+The internet wasn't designed to be confusing. Someone just forgot to write the manual.
+
+For years, we've accepted that "tech people" understand how the internet works and everyone else just... doesn't. That AI is magic. That encryption is too complicated to explain. That you either "get it" or you don't.
+
+That's not how knowledge works.
+
+You use the internet every day. You interact with AI tools, click on padlocks, navigate websites, manage passwords. You deserve to understand what's actually happening—not because it's dangerous if you don't, but because understanding the tools you use daily is empowering.
+
+That's why we built howtouseinternet.com.
+
+It's a free, open-source platform that explains internet concepts, AI usage, and digital technologies in plain language. No corporate agenda. No paywalls. No gatekeeping.
+
+Current courses include:
+→ How AI prompting actually works (spoiler: it's not magic, it's pattern
+matching)
+→ What HTTPS and encryption mean in practice (beyond "look for the padlock")
+→ And yes, how to spot scams. But that's a bonus, not the whole story
+
+We're building this in the open because digital literacy shouldn't be
+proprietary knowledge. It's accessible (WCAG 2.1 AA compliant), available in
+multiple languages, and open for contributions from anyone who wants to help
+demystify the internet.
+
+If you've ever felt like tech knowledge is unnecessarily gatekept, or if you
+want to actually understand the tools you use every day, check it out:
+howtouseinternet.com
+
+And if you have expertise to share? The repo is Apache 2.0 licensed.
+Contributions welcome.
+
+Because the gap isn't between "digital natives" and everyone else. It's between
+people who've had things explained to them and people who haven't.
+
+Let's close that gap.
+
+#DigitalLiteracy #OpenSource
