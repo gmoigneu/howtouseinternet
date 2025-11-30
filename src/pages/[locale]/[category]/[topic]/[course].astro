@@ -67,37 +67,78 @@ const topicName = getTopicName(locale, topic);
 
 // Get chapter headings (h2)
 const chapters = headings.filter(h => h.depth === 2);
+
+// Build the path to the markdown file for GitHub edit link
+const githubEditPath = `src/content/courses/${course.id}.md`;
 ---
 
-<BaseLayout title={course.data.title}>
-  <p><a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}>{t(locale, 'backTo')} {topicName}</a></p>
+<BaseLayout title={course.data.title} sidebar={true} githubEditPath={githubEditPath}>
+  <aside slot="sidebar" class="hidden lg:block">
+    <div class="sticky top-8">
+      <p class="mb-6">
+        <a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)} class="nav-link">
+          {t(locale, 'backTo')} {topicName}
+        </a>
+      </p>
 
-  <article>
-    <header>
+      {chapters.length > 0 && (
+        <nav aria-label="Table of contents">
+          <h2 class="nav-link nav-link-active mb-4">{t(locale, 'chapters')}</h2>
+          <ol class="list-none pl-0 space-y-2">
+            {chapters.map((chapter, index) => (
+              <li>
+                <a href={`#${chapter.slug}`} class="font-sans text-xs text-text-subtle hover:text-text no-underline">
+                  {index + 1}. {chapter.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+    </div>
+  </aside>
+
+  <article class="prose">
+    <p class="lg:hidden mb-8">
+      <a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)} class="nav-link">
+        {t(locale, 'backTo')} {topicName}
+      </a>
+    </p>
+
+    <header class="mb-12">
       <h1>{course.data.title}</h1>
-      <p>{course.data.description}</p>
+      <p class="text-lg text-text-muted">{course.data.description}</p>
 
       {!isTranslated && (
-        <p><em>{t(locale, 'notTranslated')}</em></p>
+        <p class="text-sm text-text-subtle italic border-l-2 border-border pl-4 my-6">
+          {t(locale, 'notTranslated')}
+        </p>
       )}
 
       {course.data.objectives && course.data.objectives.length > 0 && (
-        <section>
-          <h2>{t(locale, 'whatYoullLearn')}</h2>
-          <ul>
+        <section class="bg-surface p-6 rounded-lg my-8" aria-labelledby="objectives-heading">
+          <h2 id="objectives-heading" class="font-sans text-base font-semibold mt-0 mb-4">{t(locale, 'whatYoullLearn')}</h2>
+          <ul class="list-none pl-0 space-y-2 mb-0">
             {course.data.objectives.map((objective) => (
-              <li>{objective}</li>
+              <li class="flex items-start gap-2 mb-0">
+                <span class="text-text-muted" aria-hidden="true">-</span>
+                <span>{objective}</span>
+              </li>
             ))}
           </ul>
         </section>
       )}
 
       {chapters.length > 0 && (
-        <nav>
-          <h2>{t(locale, 'chapters')}</h2>
-          <ol>
-            {chapters.map((chapter) => (
-              <li><a href={`#${chapter.slug}`}>{chapter.text}</a></li>
+        <nav class="lg:hidden border border-border p-6 rounded-lg my-8" aria-label="Table of contents">
+          <h2 class="font-sans text-base font-semibold mt-0 mb-4">{t(locale, 'chapters')}</h2>
+          <ol class="list-none pl-0 space-y-2 mb-0">
+            {chapters.map((chapter, index) => (
+              <li class="mb-0">
+                <a href={`#${chapter.slug}`} class="font-sans text-xs text-text-subtle hover:text-text no-underline">
+                  {index + 1}. {chapter.text}
+                </a>
+              </li>
             ))}
           </ol>
         </nav>
@@ -106,9 +147,17 @@ const chapters = headings.filter(h => h.depth === 2);
 
     <Content />
 
-    <footer>
-      <p>{t(locale, 'author')}: {course.data.author}</p>
-      <p>{t(locale, 'lastUpdated')}: {course.data.updated_at.toLocaleDateString(locale)}</p>
+    <footer class="mt-16 pt-8 border-t border-border">
+      <dl class="text-sm text-text-muted space-y-1">
+        <div class="flex gap-2">
+          <dt class="font-medium">{t(locale, 'author')}:</dt>
+          <dd>{course.data.author}</dd>
+        </div>
+        <div class="flex gap-2">
+          <dt class="font-medium">{t(locale, 'lastUpdated')}:</dt>
+          <dd>{course.data.updated_at.toLocaleDateString(locale)}</dd>
+        </div>
+      </dl>
     </footer>
   </article>
 </BaseLayout>

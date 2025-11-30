@@ -30,6 +30,11 @@ export const translations: Record<Locale, Translation> = {
       notTranslated: 'This course is not yet available in your language. Showing English version.',
       siteTitle: 'How To Use Internet',
       siteDescription: 'Free courses about internet concepts, security, and AI usage.',
+      editThisCourse: 'Edit this course',
+      viewOnGithub: 'GitHub',
+      license: 'License',
+      licenseTitle: 'Apache License 2.0',
+      licenseDescription: 'This project is licensed under the Apache License, Version 2.0.',
     },
   },
   fr: {
@@ -60,6 +65,11 @@ export const translations: Record<Locale, Translation> = {
       notTranslated: 'Ce cours n\'est pas encore disponible dans votre langue. Affichage de la version anglaise.',
       siteTitle: 'How To Use Internet',
       siteDescription: 'Cours gratuits sur les concepts d\'internet, la sécurité et l\'utilisation de l\'IA.',
+      editThisCourse: 'Modifier ce cours',
+      viewOnGithub: 'GitHub',
+      license: 'Licence',
+      licenseTitle: 'Licence Apache 2.0',
+      licenseDescription: 'Ce projet est sous licence Apache, Version 2.0.',
     },
   },
   es: {
@@ -90,6 +100,11 @@ export const translations: Record<Locale, Translation> = {
       notTranslated: 'Este curso aún no está disponible en tu idioma. Mostrando la versión en inglés.',
       siteTitle: 'How To Use Internet',
       siteDescription: 'Cursos gratuitos sobre conceptos de internet, seguridad y uso de IA.',
+      editThisCourse: 'Editar este curso',
+      viewOnGithub: 'GitHub',
+      license: 'Licencia',
+      licenseTitle: 'Licencia Apache 2.0',
+      licenseDescription: 'Este proyecto está licenciado bajo la Licencia Apache, Versión 2.0.',
     },
   },
 };
@@ -111,6 +126,11 @@ interface Translation {
     notTranslated: string;
     siteTitle: string;
     siteDescription: string;
+    editThisCourse: string;
+    viewOnGithub: string;
+    license: string;
+    licenseTitle: string;
+    licenseDescription: string;
   };
 }
 

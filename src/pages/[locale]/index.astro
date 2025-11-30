@@ -41,20 +41,42 @@ for (const course of courses) {
 ---
 
 <BaseLayout title={t(locale, 'home')}>
-  <h1>{t(locale, 'siteTitle')}</h1>
-  <p>{t(locale, 'siteDescription')}</p>
+  <div class="max-w-[680px]">
+    <h1 class="font-serif text-4xl font-normal leading-tight mb-6">
+      {t(locale, 'siteTitle')}
+    </h1>
+    <p class="text-lg text-text-muted mb-12">
+      {t(locale, 'siteDescription')}
+    </p>
 
-  {Array.from(structure.entries()).map(([category, topics]) => (
-    <section>
-      <h2><a href={getRelativeLocaleUrl(locale, `/${category}`)}>{getCategoryName(locale, category)}</a></h2>
-      <ul>
-        {Array.from(topics.entries()).map(([topic, topicCourses]) => (
-          <li>
-            <a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}>{getTopicName(locale, topic)}</a>
-            <span> ({topicCourses.length} {topicCourses.length === 1 ? t(locale, 'course') : t(locale, 'courses')})</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  ))}
+    <div class="space-y-12">
+      {Array.from(structure.entries()).map(([category, topics]) => (
+        <section>
+          <h2 class="font-serif text-3xl font-normal mb-6">
+            <a
+              href={getRelativeLocaleUrl(locale, `/${category}`)}
+              class="text-text no-underline hover:underline"
+            >
+              {getCategoryName(locale, category)}
+            </a>
+          </h2>
+          <ul class="space-y-3 list-none pl-0">
+            {Array.from(topics.entries()).map(([topic, topicCourses]) => (
+              <li class="flex items-baseline gap-2">
+                <a
+                  href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}
+                  class="nav-link text-sm"
+                >
+                  {getTopicName(locale, topic)}
+                </a>
+                <span class="text-xs text-text-subtle">
+                  ({topicCourses.length} {topicCourses.length === 1 ? t(locale, 'course') : t(locale, 'courses')})
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </div>
 </BaseLayout>

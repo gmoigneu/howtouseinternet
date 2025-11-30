@@ -60,16 +60,31 @@ const topicName = getTopicName(locale, topic);
 ---
 
 <BaseLayout title={topicName}>
-  <h1>{topicName}</h1>
+  <div class="max-w-[680px]">
+    <p class="mb-8">
+      <a href={getRelativeLocaleUrl(locale, `/${category}`)} class="nav-link">
+        {t(locale, 'backTo')} {categoryName}
+      </a>
+    </p>
 
-  <p><a href={getRelativeLocaleUrl(locale, `/${category}`)}>{t(locale, 'backTo')} {categoryName}</a></p>
+    <h1 class="font-serif text-4xl font-normal leading-tight mb-8">
+      {topicName}
+    </h1>
 
-  <h2>{t(locale, 'courses')}</h2>
-  <ul>
-    {courses.map((course) => (
-      <li>
-        <a href={getRelativeLocaleUrl(locale, `/${category}/${topic}/${course.slug}`)}>{course.title}</a>
-      </li>
-    ))}
-  </ul>
+    <section>
+      <h2 class="nav-link nav-link-active mb-6">{t(locale, 'courses')}</h2>
+      <ul class="space-y-4 list-none pl-0">
+        {courses.map((course) => (
+          <li>
+            <a
+              href={getRelativeLocaleUrl(locale, `/${category}/${topic}/${course.slug}`)}
+              class="text-text underline hover:text-black"
+            >
+              {course.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
 </BaseLayout>
