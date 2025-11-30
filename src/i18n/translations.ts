@@ -4,17 +4,28 @@ export type Locale = (typeof locales)[number];
 export const translations: Record<Locale, Translation> = {
   en: {
     categories: {
-      ai: 'AI',
-      security: 'Security',
-      technology: 'Technology',
-      productivity: 'Productivity',
+      'stay-safe-online': 'Stay safe online',
+      'internet-technologies': 'The technologies behind Internet',
+      'artificial-intelligence': 'Artificial Intelligence',
     },
     topics: {
-      'getting-better-at-using-ai': 'Getting better at using AI',
-      passwords: 'Passwords',
-      privacy: 'Privacy',
-      scams: 'Scams',
-      networking: 'Networking',
+      // Stay safe online
+      'passwords': 'Passwords',
+      'privacy': 'Privacy',
+      'scams': 'Scams & phishing',
+      'malware': 'Malware & viruses',
+      'social-engineering': 'Social engineering',
+      // Internet technologies
+      'how-internet-works': 'How the Internet works',
+      'browsers': 'Web browsers',
+      'networking': 'Networking basics',
+      'cloud': 'Cloud computing',
+      'encryption': 'Encryption',
+      // Artificial Intelligence
+      'getting-started-with-ai': 'Getting started with AI',
+      'prompting': 'Effective prompting',
+      'ai-tools': 'AI tools & applications',
+      'ai-ethics': 'AI ethics & safety',
     },
     ui: {
       home: 'Home',
@@ -35,21 +46,37 @@ export const translations: Record<Locale, Translation> = {
       license: 'License',
       licenseTitle: 'Apache License 2.0',
       licenseDescription: 'This project is licensed under the Apache License, Version 2.0.',
+      readingTime: '{minutes} min read',
+      difficulty: 'Difficulty',
+      difficultyBeginner: 'Beginner',
+      difficultyIntermediate: 'Intermediate',
+      difficultyAdvanced: 'Advanced',
     },
   },
   fr: {
     categories: {
-      ai: 'IA',
-      security: 'Sécurité',
-      technology: 'Technologie',
-      productivity: 'Productivité',
+      'stay-safe-online': 'Rester en sécurité en ligne',
+      'internet-technologies': 'Les technologies derrière Internet',
+      'artificial-intelligence': 'Intelligence Artificielle',
     },
     topics: {
-      'getting-better-at-using-ai': 'Mieux utiliser l\'IA',
-      passwords: 'Mots de passe',
-      privacy: 'Vie privée',
-      scams: 'Arnaques',
-      networking: 'Réseaux',
+      // Stay safe online
+      'passwords': 'Mots de passe',
+      'privacy': 'Vie privée',
+      'scams': 'Arnaques & hameçonnage',
+      'malware': 'Logiciels malveillants & virus',
+      'social-engineering': 'Ingénierie sociale',
+      // Internet technologies
+      'how-internet-works': 'Comment fonctionne Internet',
+      'browsers': 'Navigateurs web',
+      'networking': 'Bases des réseaux',
+      'cloud': 'Cloud computing',
+      'encryption': 'Chiffrement',
+      // Artificial Intelligence
+      'getting-started-with-ai': 'Débuter avec l\'IA',
+      'prompting': 'Rédiger des prompts efficaces',
+      'ai-tools': 'Outils & applications IA',
+      'ai-ethics': 'Éthique & sécurité de l\'IA',
     },
     ui: {
       home: 'Accueil',
@@ -70,21 +97,37 @@ export const translations: Record<Locale, Translation> = {
       license: 'Licence',
       licenseTitle: 'Licence Apache 2.0',
       licenseDescription: 'Ce projet est sous licence Apache, Version 2.0.',
+      readingTime: '{minutes} min de lecture',
+      difficulty: 'Difficulté',
+      difficultyBeginner: 'Débutant',
+      difficultyIntermediate: 'Intermédiaire',
+      difficultyAdvanced: 'Avancé',
     },
   },
   es: {
     categories: {
-      ai: 'IA',
-      security: 'Seguridad',
-      technology: 'Tecnología',
-      productivity: 'Productividad',
+      'stay-safe-online': 'Mantente seguro en línea',
+      'internet-technologies': 'Las tecnologías detrás de Internet',
+      'artificial-intelligence': 'Inteligencia Artificial',
     },
     topics: {
-      'getting-better-at-using-ai': 'Mejorar el uso de la IA',
-      passwords: 'Contraseñas',
-      privacy: 'Privacidad',
-      scams: 'Estafas',
-      networking: 'Redes',
+      // Stay safe online
+      'passwords': 'Contraseñas',
+      'privacy': 'Privacidad',
+      'scams': 'Estafas & phishing',
+      'malware': 'Malware & virus',
+      'social-engineering': 'Ingeniería social',
+      // Internet technologies
+      'how-internet-works': 'Cómo funciona Internet',
+      'browsers': 'Navegadores web',
+      'networking': 'Conceptos básicos de redes',
+      'cloud': 'Computación en la nube',
+      'encryption': 'Cifrado',
+      // Artificial Intelligence
+      'getting-started-with-ai': 'Primeros pasos con la IA',
+      'prompting': 'Prompts efectivos',
+      'ai-tools': 'Herramientas y aplicaciones de IA',
+      'ai-ethics': 'Ética y seguridad de la IA',
     },
     ui: {
       home: 'Inicio',
@@ -105,6 +148,11 @@ export const translations: Record<Locale, Translation> = {
       license: 'Licencia',
       licenseTitle: 'Licencia Apache 2.0',
       licenseDescription: 'Este proyecto está licenciado bajo la Licencia Apache, Versión 2.0.',
+      readingTime: '{minutes} min de lectura',
+      difficulty: 'Dificultad',
+      difficultyBeginner: 'Principiante',
+      difficultyIntermediate: 'Intermedio',
+      difficultyAdvanced: 'Avanzado',
     },
   },
 };
@@ -131,7 +179,27 @@ interface Translation {
     license: string;
     licenseTitle: string;
     licenseDescription: string;
+    readingTime: string;
+    difficulty: string;
+    difficultyBeginner: string;
+    difficultyIntermediate: string;
+    difficultyAdvanced: string;
   };
+}
+
+export function getDifficultyLabel(locale: string, difficulty: 'beginner' | 'intermediate' | 'advanced'): string {
+  const loc = (locales.includes(locale as Locale) ? locale : 'en') as Locale;
+  const difficultyMap = {
+    beginner: translations[loc].ui.difficultyBeginner,
+    intermediate: translations[loc].ui.difficultyIntermediate,
+    advanced: translations[loc].ui.difficultyAdvanced,
+  };
+  return difficultyMap[difficulty];
+}
+
+export function getReadingTime(locale: string, minutes: number): string {
+  const loc = (locales.includes(locale as Locale) ? locale : 'en') as Locale;
+  return translations[loc].ui.readingTime.replace('{minutes}', String(minutes));
 }
 
 export function t(locale: string, key: keyof Translation['ui']): string {

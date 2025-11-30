@@ -10,8 +10,8 @@ const courses = defineCollection({
     objectives: z.array(z.string()),
     updated_at: z.coerce.date(),
     author: z.string(),
-    difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
-    estimatedTime: z.string().optional(),
+    readingTime: z.number().min(1),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced']),
     prerequisites: z.array(z.string()).optional(),
   }),
 });

@@ -14,6 +14,8 @@ objectives:
   - Know how to iterate and refine prompts for better results
 updated_at: 2024-11-30
 author: "How To Use Internet"
+readingTime: 12
+difficulty: beginner
 ---
 
 ## Chapter 1: What is a Prompt?

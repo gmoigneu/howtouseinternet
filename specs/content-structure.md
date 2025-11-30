@@ -77,6 +77,8 @@ objectives:
   - Know when to use a password manager
 updated_at: 2024-01-15
 author: "Contributor Name"
+readingTime: 10
+difficulty: beginner
 ---
 ```
 
@@ -130,11 +132,11 @@ URLs follow the content hierarchy:
 | objectives | array | Learning objectives (what the reader will learn) |
 | updated_at | date | Last modification date (YYYY-MM-DD) |
 | author | string | Content author name |
+| readingTime | number | Estimated reading time in minutes |
+| difficulty | enum | Course difficulty level: `beginner`, `intermediate`, or `advanced` |
 
 ### Optional Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
-| difficulty | enum | beginner, intermediate, advanced |
-| estimatedTime | string | Estimated reading time |
 | prerequisites | array | Required prior courses |

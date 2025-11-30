@@ -14,6 +14,8 @@ objectives:
   - Savoir comment itérer et affiner ses prompts pour de meilleurs résultats
 updated_at: 2024-11-30
 author: "How To Use Internet"
+readingTime: 12
+difficulty: beginner
 ---
 
 ## Chapitre 1 : Qu'est-ce qu'un prompt ?
