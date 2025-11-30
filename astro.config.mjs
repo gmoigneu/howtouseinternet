@@ -10,7 +10,11 @@ export default defineConfig({
     defaultLocale: 'en',
     routing: {
       prefixDefaultLocale: true,
+      redirectToDefaultLocale: true,
     },
+  },
+  redirects: {
+    '/': '/en/',
   },
   vite: {
     plugins: [tailwindcss()]
