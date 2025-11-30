@@ -1,12 +1,25 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
+const currentLocale = Astro.currentLocale || 'en';
+const locales = ['en', 'fr', 'es'] as const;
+const localeNames: Record<string, string> = {
+  en: 'English',
+  fr: 'Français',
+  es: 'Español',
+};
+
+// Get the current path without the locale prefix
+const currentPath = Astro.url.pathname;
+const pathWithoutLocale = currentPath.replace(/^\/(en|fr|es)/, '') || '/';
 ---
 
-<html lang="en">
+<html lang={currentLocale}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -17,7 +30,16 @@ const { title } = Astro.props;
   <body>
     <header>
       <nav>
-        <a href="/">How To Use Internet</a>
+        <a href={getRelativeLocaleUrl(currentLocale, '/')}>How To Use Internet</a>
+        <div>
+          {locales.map((locale) => (
+            locale === currentLocale ? (
+              <strong>{localeNames[locale]}</strong>
+            ) : (
+              <a href={getRelativeLocaleUrl(locale, pathWithoutLocale)}>{localeNames[locale]}</a>
+            )
+          ))}
+        </div>
       </nav>
     </header>
     <main>

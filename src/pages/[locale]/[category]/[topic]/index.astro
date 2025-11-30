@@ -1,6 +1,7 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 
 export async function getStaticPaths() {
   const courses = await getCollection('courses');
@@ -11,10 +12,10 @@ export async function getStaticPaths() {
     const parts = course.id.split('/');
     if (parts.length < 4) continue;
 
-    const [category, topic, courseSlug, locale] = parts;
+    const [category, topic, courseSlug, courseLocale] = parts;
 
-    // Only use English courses for the listing
-    if (locale !== 'en') continue;
+    // Only use English courses for the listing (as fallback titles)
+    if (courseLocale !== 'en') continue;
 
     const key = `${category}/${topic}`;
 
@@ -26,10 +27,17 @@ export async function getStaticPaths() {
     topicData.courses.push({ slug: courseSlug, title: course.data.title });
   }
 
-  return Array.from(topics.values()).map(({ category, topic, courses }) => ({
-    params: { category, topic },
-    props: { category, topic, courses },
-  }));
+  const paths = [];
+  for (const locale of ['en', 'fr', 'es']) {
+    for (const { category, topic, courses } of topics.values()) {
+      paths.push({
+        params: { locale, category, topic },
+        props: { category, topic, courses },
+      });
+    }
+  }
+
+  return paths;
 }
 
 interface Props {
@@ -38,19 +46,20 @@ interface Props {
   courses: Array<{ slug: string; title: string }>;
 }
 
+const { locale } = Astro.params;
 const { category, topic, courses } = Astro.props;
 ---
 
 <BaseLayout title={topic}>
   <h1>{topic}</h1>
 
-  <p><a href={`/${category}`}>← Back to {category}</a></p>
+  <p><a href={getRelativeLocaleUrl(locale, `/${category}`)}>← Back to {category}</a></p>
 
   <h2>Courses</h2>
   <ul>
     {courses.map((course) => (
       <li>
-        <a href={`/${category}/${topic}/${course.slug}`}>{course.title}</a>
+        <a href={getRelativeLocaleUrl(locale, `/${category}/${topic}/${course.slug}`)}>{course.title}</a>
       </li>
     ))}
   </ul>

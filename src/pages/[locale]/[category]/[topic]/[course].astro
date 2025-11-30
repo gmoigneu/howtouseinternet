@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+export async function getStaticPaths() {
+  const courses = await getCollection('courses');
+
+  // Group courses by category/topic/courseSlug
+  const courseMap = new Map<string, Map<string, typeof courses[number]>>();
+
+  for (const course of courses) {
+    const parts = course.id.split('/');
+    if (parts.length < 4) continue;
+
+    const [category, topic, courseSlug, courseLocale] = parts;
+    const key = `${category}/${topic}/${courseSlug}`;
+
+    if (!courseMap.has(key)) {
+      courseMap.set(key, new Map());
+    }
+    courseMap.get(key)!.set(courseLocale, course);
+  }
+
+  const paths = [];
+  for (const [key, localeVersions] of courseMap.entries()) {
+    const [category, topic, courseSlug] = key.split('/');
+
+    for (const locale of ['en', 'fr', 'es']) {
+      // Get the course in the requested locale, fallback to English
+      const course = localeVersions.get(locale) || localeVersions.get('en');
+      if (!course) continue;
+
+      const availableLocales = Array.from(localeVersions.keys());
+
+      paths.push({
+        params: { locale, category, topic, course: courseSlug },
+        props: {
+          category,
+          topic,
+          courseSlug,
+          course,
+          availableLocales,
+          isTranslated: localeVersions.has(locale),
+        },
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  category: string;
+  topic: string;
+  courseSlug: string;
+  course: Awaited<ReturnType<typeof getCollection>>[number];
+  availableLocales: string[];
+  isTranslated: boolean;
+}
+
+const { locale } = Astro.params;
+const { category, topic, courseSlug, course, availableLocales, isTranslated } = Astro.props;
+const { Content } = await render(course);
+---
+
+<BaseLayout title={course.data.title}>
+  <p><a href={getRelativeLocaleUrl(locale, `/${category}/${topic}`)}>← Back to {topic}</a></p>
+
+  <article>
+    <header>
+      <h1>{course.data.title}</h1>
+      <p>{course.data.description}</p>
+
+      {!isTranslated && (
+        <p><em>This course is not yet available in your language. Showing English version.</em></p>
+      )}
+
+      {course.data.objectives && course.data.objectives.length > 0 && (
+        <section>
+          <h2>What you'll learn</h2>
+          <ul>
+            {course.data.objectives.map((objective) => (
+              <li>{objective}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </header>
+
+    <Content />
+
+    <footer>
+      <p>Author: {course.data.author}</p>
+      <p>Last updated: {course.data.updated_at.toLocaleDateString()}</p>
+    </footer>
+  </article>
+</BaseLayout>
