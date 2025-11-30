@@ -1,43 +1,69 @@
-# Astro Starter Kit: Minimal
+# How To Use Internet
 
-```sh
-pnpm create astro@latest -- --template minimal
+A free, open-source knowledge website teaching essential internet concepts to everyone. Learn how the internet works, online security, efficient AI usage, and more.
+
+**Website:** [howtouseinternet.com](https://howtouseinternet.com)
+
+## About
+
+How To Use Internet provides accessible courses explaining the main concepts of the internet. Our mission is to help everyone understand and navigate the digital world safely and effectively.
+
+### Topics Covered
+
+- **How the Internet Works** - Understanding the technology behind the web
+- **Online Security** - Protecting yourself and your data online
+- **Using AI Efficiently** - Getting the most out of AI tools
+- And more...
+
+## Content Structure
+
+Content is organized in a three-level hierarchy:
+
+```
+Category
+└── Topic
+    └── Course (contains multiple chapters)
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **Category**: Broad subject areas (e.g., Security, Technology)
+- **Topic**: Specific subjects within a category (e.g., Password Management)
+- **Course**: Complete learning material with multiple chapters in a single markdown file
 
-## 🚀 Project Structure
+## Internationalization
 
-Inside of your Astro project, you'll see the following folders and files:
+The website supports multiple languages to make content accessible globally.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Technology
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Built with [Astro](https://astro.build/) as a static site generator for fast, accessible pages.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Design Philosophy
 
-Any static assets, like images, can be placed in the `public/` directory.
+- Highly readable typography
+- Serif fonts for titles
+- Sans-serif fonts for content
+- Clean, distraction-free layout
 
-## 🧞 Commands
+## Development
 
-All commands are run from the root of the project, from a terminal:
+### Prerequisites
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+- Node.js 18+
+- pnpm
 
-## 👀 Want to learn more?
+### Commands
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Command          | Action                                      |
+| :--------------- | :------------------------------------------ |
+| `pnpm install`   | Install dependencies                        |
+| `pnpm dev`       | Start local dev server at `localhost:4321`  |
+| `pnpm build`     | Build production site to `./dist/`          |
+| `pnpm preview`   | Preview build locally before deploying      |
+
+## Contributing
+
+We welcome contributions! Please see our contributing guidelines for more information.
+
+## License
+
+This project is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
