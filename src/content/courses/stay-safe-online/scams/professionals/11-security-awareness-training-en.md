@@ -1,5 +1,5 @@
 ---
-title: Security Awareness Training Programs
+title: Security awareness training programs
 duration: 10 min
 learningObjectives:
   - Design effective security awareness programs
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement continuous improvement strategies
 ---
 
-# Security Awareness Training Programs
+# Security awareness training programs
 
 Security awareness training is the most cost-effective defense against social engineering attacks. With 86% improvement in detection rates and 34.3% to 4.6% reduction in phishing susceptibility, well-designed training programs deliver measurable ROI and lasting cultural change.
 

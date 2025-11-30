@@ -1,5 +1,5 @@
 ---
-title: Recognizing Psychological Manipulation
+title: Recognizing psychological manipulation
 duration: 10 min
 learningObjectives:
   - Understand the psychological tactics scammers use to bypass rational thinking
@@ -7,7 +7,7 @@ learningObjectives:
   - Learn to build mental defenses against manipulation techniques
 ---
 
-# Recognizing Psychological Manipulation
+# Recognizing psychological manipulation
 
 Scammers are not just technical criminals—they are psychological manipulators who exploit human emotions, cognitive biases, and social tendencies. Understanding how these manipulation tactics work is your strongest defense against all types of fraud.
 

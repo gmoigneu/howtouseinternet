@@ -1,5 +1,5 @@
 ---
-title: Deepfakes and AI-Enhanced Attacks
+title: Deepfakes and AI-enhanced attacks
 duration: 10 min
 learningObjectives:
   - Understand AI-powered attack capabilities
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement verification procedures for AI-enhanced threats
 ---
 
-# Deepfakes and AI-Enhanced Attacks
+# Deepfakes and AI-enhanced attacks
 
 AI technology has revolutionized cybercrime, enabling attackers to create convincing deepfake audio, video, and text at scale. The 194% surge in AI fraud and 3,000% increase in deepfakes represent a paradigm shift in social engineering sophistication.
 

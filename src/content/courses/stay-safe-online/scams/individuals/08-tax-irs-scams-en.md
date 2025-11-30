@@ -1,5 +1,5 @@
 ---
-title: Tax and IRS Scams
+title: Tax and IRS scams
 duration: 10 min
 learningObjectives:
   - Identify IRS impersonation tactics and tax fraud schemes
@@ -7,7 +7,7 @@ learningObjectives:
   - Learn to protect yourself during tax season and year-round
 ---
 
-# Tax and IRS Scams
+# Tax and IRS scams
 
 Tax scams surge during filing season but operate year-round, exploiting fear of the IRS and tax authorities. These scams use aggressive tactics, threats, and sophisticated impersonation to steal money and personal information.
 

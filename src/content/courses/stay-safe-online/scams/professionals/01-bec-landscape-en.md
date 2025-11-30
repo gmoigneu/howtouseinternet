@@ -1,5 +1,5 @@
 ---
-title: Business Email Compromise Landscape
+title: Business email compromise landscape
 duration: 10 min
 learningObjectives:
   - Understand the scale and sophistication of BEC attacks targeting organizations
@@ -8,7 +8,7 @@ learningObjectives:
   - Understand why BEC is the costliest type of cybercrime
 ---
 
-# Business Email Compromise Landscape
+# Business email compromise landscape
 
 Welcome to the professionals course on defending your organization from sophisticated business attacks. This course is designed for executives, managers, IT professionals, and anyone responsible for protecting organizational assets and processes.
 

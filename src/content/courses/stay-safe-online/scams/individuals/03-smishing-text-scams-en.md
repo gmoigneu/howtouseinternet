@@ -1,5 +1,5 @@
 ---
-title: Smishing - Text Message Scams
+title: Smishing - text message scams
 duration: 10 min
 learningObjectives:
   - Understand the growing threat of SMS phishing (smishing)
@@ -8,7 +8,7 @@ learningObjectives:
   - Implement safe mobile messaging practices
 ---
 
-# Smishing - Text Message Scams
+# Smishing - text message scams
 
 Smishing (SMS + phishing) has exploded in recent years, with success rates far exceeding email phishing. In this chapter, you'll learn why text message scams are so effective and how to protect yourself.
 

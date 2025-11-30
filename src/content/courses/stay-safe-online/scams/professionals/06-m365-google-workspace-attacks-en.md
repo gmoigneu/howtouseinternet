@@ -1,5 +1,5 @@
 ---
-title: Microsoft 365 / Google Workspace Attacks
+title: Microsoft 365 / Google Workspace attacks
 duration: 10 min
 learningObjectives:
   - Understand cloud platform-specific threats
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement cloud security controls and monitoring
 ---
 
-# Microsoft 365 / Google Workspace Attacks
+# Microsoft 365 / Google Workspace attacks
 
 Cloud productivity platforms—Microsoft 365 and Google Workspace—are critical infrastructure for modern businesses and prime targets for attackers. With 35% of phishing impersonating Microsoft and 71.4% of M365 users experiencing monthly account compromises, securing these platforms is essential.
 

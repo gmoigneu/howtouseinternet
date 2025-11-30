@@ -1,5 +1,5 @@
 ---
-title: Advanced Persistent Threats (APTs)
+title: Advanced persistent threats (APTs)
 duration: 10 min
 learningObjectives:
   - Understand APT tactics and motivations
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement detection and response capabilities
 ---
 
-# Advanced Persistent Threats (APTs)
+# Advanced persistent threats (APTs)
 
 Advanced Persistent Threats are sophisticated, well-resourced attackers—often nation-state sponsored—who gain access to networks and remain undetected for extended periods. With 1 in 4 companies affected and median 2-day exfiltration time, APTs represent the most sophisticated threat category.
 

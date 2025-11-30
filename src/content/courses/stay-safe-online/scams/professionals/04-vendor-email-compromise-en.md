@@ -1,5 +1,5 @@
 ---
-title: Vendor Email Compromise (VEC)
+title: Vendor email compromise (VEC)
 duration: 10 min
 learningObjectives:
   - Understand VEC attack vectors and supply chain vulnerabilities
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement vendor security verification procedures
 ---
 
-# Vendor Email Compromise (VEC)
+# Vendor email compromise (VEC)
 
 Vendor Email Compromise attacks target the supply chain by compromising vendor email accounts to intercept payments, steal data, or gain access to customer systems. With 69% of companies targeted and 137% increase in financial services, VEC represents a growing threat vector.
 

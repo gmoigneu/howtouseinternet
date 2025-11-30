@@ -1,5 +1,5 @@
 ---
-title: CEO Fraud and Whaling Attacks
+title: CEO fraud and whaling attacks
 duration: 10 min
 learningObjectives:
   - Recognize sophisticated executive impersonation tactics including deepfakes
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement verification procedures for high-risk requests
 ---
 
-# CEO Fraud and Whaling Attacks
+# CEO fraud and whaling attacks
 
 "Whaling" targets high-value individuals—CEOs, CFOs, and executives—with sophisticated social engineering. These attacks combine executive impersonation with urgency and authority to bypass normal controls, resulting in massive financial losses.
 

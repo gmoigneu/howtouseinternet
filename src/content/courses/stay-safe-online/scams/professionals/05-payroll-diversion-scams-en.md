@@ -1,5 +1,5 @@
 ---
-title: Payroll Diversion Scams
+title: Payroll diversion scams
 duration: 10 min
 learningObjectives:
   - Understand payroll diversion attack methods
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement HR and payroll security controls
 ---
 
-# Payroll Diversion Scams
+# Payroll diversion scams
 
 Payroll diversion attacks target HR and payroll departments with fraudulent requests to change employee direct deposit information. With an 815% increase in attempts, these attacks redirect employee paychecks to criminal accounts before detection.
 

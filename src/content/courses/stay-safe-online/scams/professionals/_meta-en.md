@@ -1,5 +1,5 @@
 ---
-title: "Defend Your Organization from Business Scams"
+title: "Defend your organization from business scams"
 description: "An advanced course for business professionals covering Business Email Compromise (BEC), CEO fraud, wire transfer fraud, supply chain attacks, deepfakes, and building security-conscious organizations."
 keywords:
   - business email compromise

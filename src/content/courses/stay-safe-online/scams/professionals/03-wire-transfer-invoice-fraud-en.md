@@ -1,5 +1,5 @@
 ---
-title: Wire Transfer and Invoice Fraud
+title: Wire transfer and invoice fraud
 duration: 10 min
 learningObjectives:
   - Understand wire transfer fraud mechanisms and vulnerabilities
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement multi-layer verification procedures for payments
 ---
 
-# Wire Transfer and Invoice Fraud
+# Wire transfer and invoice fraud
 
 Wire transfer and invoice fraud represents the most financially devastating category of BEC attacks. With 90% of companies targeted and 63% experiencing actual fraud, these attacks exploit payment processes to divert funds to criminal accounts.
 

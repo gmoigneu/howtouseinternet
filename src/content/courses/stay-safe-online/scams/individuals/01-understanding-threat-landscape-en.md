@@ -1,5 +1,5 @@
 ---
-title: Understanding the Threat Landscape
+title: Understanding the threat landscape
 duration: 10 min
 learningObjectives:
   - Understand the scale and impact of phishing/smishing threats worldwide
@@ -8,7 +8,7 @@ learningObjectives:
   - Recognize that prevention is possible with the right knowledge
 ---
 
-# Understanding the Threat Landscape
+# Understanding the threat landscape
 
 Welcome to the Sting9 Research Initiative's educational course on protecting yourself from digital threats. In this first chapter, we'll explore the current state of phishing, smishing, and scam attacks to understand why learning about these threats is so important.
 

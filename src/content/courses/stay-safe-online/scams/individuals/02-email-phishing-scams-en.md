@@ -1,5 +1,5 @@
 ---
-title: Email Phishing Scams
+title: Email phishing scams
 duration: 10 min
 learningObjectives:
   - Identify common email phishing tactics and attack patterns
@@ -8,7 +8,7 @@ learningObjectives:
   - Learn verification procedures before clicking links or responding
 ---
 
-# Email Phishing Scams
+# Email phishing scams
 
 Email remains one of the most common attack vectors for scammers. In this chapter, you'll learn to identify phishing emails, understand how attackers craft convincing messages, and protect yourself from this pervasive threat.
 

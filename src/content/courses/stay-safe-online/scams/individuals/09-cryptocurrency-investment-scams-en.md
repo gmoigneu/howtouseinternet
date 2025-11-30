@@ -1,5 +1,5 @@
 ---
-title: Cryptocurrency and Investment Scams
+title: Cryptocurrency and investment scams
 duration: 10 min
 learningObjectives:
   - Identify cryptocurrency and investment fraud schemes
@@ -7,7 +7,7 @@ learningObjectives:
   - Understand why crypto scams are particularly devastating
 ---
 
-# Cryptocurrency and Investment Scams
+# Cryptocurrency and investment scams
 
 Cryptocurrency and investment scams combine financial exploitation with technological confusion, targeting both experienced investors and newcomers. The irreversible nature of cryptocurrency transactions makes these scams particularly devastating.
 

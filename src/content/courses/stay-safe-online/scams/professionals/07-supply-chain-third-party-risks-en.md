@@ -1,5 +1,5 @@
 ---
-title: Supply Chain and Third-Party Risks
+title: Supply chain and third-party risks
 duration: 10 min
 learningObjectives:
   - Understand supply chain attack vectors
@@ -7,7 +7,7 @@ learningObjectives:
   - Implement vendor risk management programs
 ---
 
-# Supply Chain and Third-Party Risks
+# Supply chain and third-party risks
 
 Supply chain attacks exploit trusted vendor relationships to compromise multiple targets simultaneously. The 78% increase in 2024, highlighted by major incidents like Change Healthcare and CrowdStrike, demonstrates how third-party risks can cause catastrophic business disruption.
 

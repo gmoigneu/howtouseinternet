@@ -1,5 +1,5 @@
 ---
-title: Social Media Scams
+title: Social media scams
 duration: 10 min
 learningObjectives:
   - Identify social media-specific scam tactics across different platforms
@@ -8,7 +8,7 @@ learningObjectives:
   - Learn platform-specific threats and defenses
 ---
 
-# Social Media Scams
+# Social media scams
 
 Social media has become a goldmine for scammers, with unique attack vectors that exploit trust, connections, and the casual nature of these platforms. In this chapter, you'll learn to protect yourself across all major social networks.
 

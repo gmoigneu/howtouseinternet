@@ -1,5 +1,5 @@
 ---
-title: Romance Scams
+title: Romance scams
 duration: 10 min
 learningObjectives:
   - Recognize romance scam warning signs on dating platforms and social media
@@ -7,7 +7,7 @@ learningObjectives:
   - Learn to protect yourself from emotional manipulation and financial exploitation
 ---
 
-# Romance Scams
+# Romance scams
 
 Romance scams weaponize human emotions, combining social engineering with emotional manipulation to defraud victims. In 2024, these scams resulted in higher average losses than almost any other fraud type, with devastating emotional and financial consequences.
 

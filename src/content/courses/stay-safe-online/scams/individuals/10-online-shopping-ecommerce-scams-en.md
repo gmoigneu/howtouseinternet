@@ -1,5 +1,5 @@
 ---
-title: Online Shopping and E-Commerce Scams
+title: Online shopping and e-commerce scams
 duration: 10 min
 learningObjectives:
   - Identify fake online stores and fraudulent sellers
@@ -7,7 +7,7 @@ learningObjectives:
   - Learn safe online shopping practices and payment protection methods
 ---
 
-# Online Shopping and E-Commerce Scams
+# Online shopping and e-commerce scams
 
 Online shopping scams exploit the convenience of e-commerce, creating fake stores, advertising non-existent products, and selling counterfeits. With 70-90% discounts and professional-looking websites, these scams trick millions of shoppers annually.
 

@@ -1,5 +1,5 @@
 ---
-title: What To Do If Targeted or Compromised
+title: What to do if targeted or compromised
 duration: 10 min
 learningObjectives:
   - Know immediate actions to take if you've been scammed or compromised
@@ -7,7 +7,7 @@ learningObjectives:
   - Learn identity theft response and credit protection measures
 ---
 
-# What To Do If Targeted or Compromised
+# What to do if targeted or compromised
 
 Despite our best efforts, anyone can fall victim to a scam or have their information compromised. What matters most is how quickly and effectively you respond. This chapter provides a comprehensive, step-by-step action plan for different scenarios.
 

@@ -1,5 +1,5 @@
 ---
-title: Package Delivery Scams
+title: Package delivery scams
 duration: 10 min
 learningObjectives:
   - Identify fake delivery notifications from USPS, FedEx, UPS, and Amazon
@@ -7,7 +7,7 @@ learningObjectives:
   - Learn to safely track legitimate packages
 ---
 
-# Package Delivery Scams
+# Package delivery scams
 
 In 2024, delivery notification scams increased by 174%, exploiting our reliance on online shopping and package deliveries. These scams impersonate trusted logistics companies to steal personal information, payment details, and credentials.
 

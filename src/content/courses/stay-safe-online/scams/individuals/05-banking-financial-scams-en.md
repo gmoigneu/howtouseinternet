@@ -1,5 +1,5 @@
 ---
-title: Banking and Financial Scams
+title: Banking and financial scams
 duration: 10 min
 learningObjectives:
   - Recognize financial institution phishing attempts
@@ -8,7 +8,7 @@ learningObjectives:
   - Learn what real banks will and won't do
 ---
 
-# Banking and Financial Scams
+# Banking and financial scams
 
 Financial scams target your bank accounts, credit cards, and payment apps. This chapter covers how to protect your finances from sophisticated attacks.
 

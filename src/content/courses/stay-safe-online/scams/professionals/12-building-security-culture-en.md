@@ -1,5 +1,5 @@
 ---
-title: Building a Security-Conscious Organization
+title: Building a security-conscious organization
 duration: 10 min
 learningObjectives:
   - Create organizational security culture
@@ -7,7 +7,7 @@ learningObjectives:
   - Establish continuous improvement processes
 ---
 
-# Building a Security-Conscious Organization
+# Building a security-conscious organization
 
 The ultimate defense against social engineering is an organization where security is everyone's responsibility, verification is praised not questioned, and continuous improvement is embedded in operations. Building this culture requires leadership commitment, clear accountability, and sustained effort.
 

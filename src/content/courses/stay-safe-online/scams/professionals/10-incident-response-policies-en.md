@@ -1,5 +1,5 @@
 ---
-title: Incident Response and Corporate Policies
+title: Incident response and corporate policies
 duration: 10 min
 learningObjectives:
   - Develop comprehensive incident response plans
@@ -7,7 +7,7 @@ learningObjectives:
   - Establish clear procedures for common scenarios
 ---
 
-# Incident Response and Corporate Policies
+# Incident response and corporate policies
 
 Effective incident response and clear security policies are the foundation of organizational resilience. Well-documented procedures, regular training, and practiced response capabilities determine whether incidents are minor disruptions or catastrophic failures.
 

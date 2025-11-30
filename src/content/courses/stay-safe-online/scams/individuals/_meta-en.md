@@ -1,5 +1,5 @@
 ---
-title: "Protect Yourself from Online Scams"
+title: "Protect yourself from online scams"
 description: "A comprehensive course designed for everyday users to recognize and defend against phishing, smishing, romance scams, financial fraud, and other common digital threats."
 keywords:
   - phishing
