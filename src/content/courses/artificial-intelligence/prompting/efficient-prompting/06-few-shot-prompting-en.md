@@ -25,19 +25,23 @@ When you provide examples of the output you want, the AI does not need to interp
 
 Consider trying to explain a particular writing style:
 
-> Write in a casual but informative tone, using occasional humor and direct address, with short paragraphs and punchy sentences.
+```
+Write in a casual but informative tone, using occasional humor and direct address, with short paragraphs and punchy sentences.
+```
 
 This gives the AI something to work with, but there is still room for interpretation. What exactly does "occasional humor" mean? How short are the paragraphs? What makes a sentence "punchy"?
 
 Now consider showing an example:
 
-> Write in this style:
->
-> "Here's the thing about passwords: we all know they should be strong, unique, and impossible to remember. Great. Thanks. Super helpful.
->
-> But there's actually a way out of this mess. It's called a password manager, and once you start using one, you'll wonder why you ever tried to remember 47 variations of your dog's name."
->
-> Now write about two-factor authentication in the same style.
+```
+Write in this style:
+
+"Here's the thing about passwords: we all know they should be strong, unique, and impossible to remember. Great. Thanks. Super helpful.
+
+But there's actually a way out of this mess. It's called a password manager, and once you start using one, you'll wonder why you ever tried to remember 47 variations of your dog's name."
+
+Now write about two-factor authentication in the same style.
+```
 
 The AI can now match the tone, structure, sentence length, and humor style exactly because it has a concrete example to follow.
 
@@ -61,21 +65,23 @@ Your examples can demonstrate any aspect of the response you care about:
 
 Let us add a few-shot example to our Japan prompt. We will show the AI exactly what we want one day of the itinerary to look like:
 
-> You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.
->
-> I'm planning my first trip to Japan with the following details:
-> [All our context from Chapter 4]
->
-> **Here is an example of exactly how I want each day formatted:**
->
-> | Date | Location | Morning | Afternoon | Evening | Est. Cost |
-> |------|----------|---------|-----------|---------|-----------|
-> | April 5 | Tokyo (Asakusa) | Arrive Narita, train to Asakusa. Check into ryokan. | Explore Senso-ji Temple. | Dinner at Sometaro (okonomiyaki, book ahead). Walk Nakamise at night. | $45 |
->
-> **For accommodations, format like this:**
-> - **Tokyo (April 5-8):** Sadachiyo Sukeroku no Yado - Traditional ryokan in Asakusa, $150/night. Perfect for first Japan nights, includes breakfast.
->
-> **Please complete the remaining days following this exact format and style. Note the level of specificity: actual restaurant names where possible, booking notes, specific attractions rather than vague "explore the city" suggestions.**
+```
+You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.
+
+I'm planning my first trip to Japan with the following details:
+[All our context from Chapter 4]
+
+Here is an example of exactly how I want each day formatted:
+
+| Date | Location | Morning | Afternoon | Evening | Est. Cost |
+|------|----------|---------|-----------|---------|-----------|
+| April 5 | Tokyo (Asakusa) | Arrive Narita, train to Asakusa. Check into ryokan. | Explore Senso-ji Temple. | Dinner at Sometaro (okonomiyaki, book ahead). Walk Nakamise at night. | $45 |
+
+For accommodations, format like this:
+- Tokyo (April 5-8): Sadachiyo Sukeroku no Yado - Traditional ryokan in Asakusa, $150/night. Perfect for first Japan nights, includes breakfast.
+
+Please complete the remaining days following this exact format and style. Note the level of specificity: actual restaurant names where possible, booking notes, specific attractions rather than vague "explore the city" suggestions.
+```
 
 Now the AI has a crystal-clear template to follow. Every day will match the format of your example. The level of detail, the structure, even the parenthetical notes will be consistent.
 

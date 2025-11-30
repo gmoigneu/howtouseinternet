@@ -33,7 +33,9 @@ Throughout this course, we will follow one prompt from disaster to triumph. Our 
 
 Here is where most people start:
 
-> Plan me a trip to Japan.
+```
+Plan me a trip to Japan.
+```
 
 Go ahead, try this yourself with any AI assistant. You will get something like this:
 

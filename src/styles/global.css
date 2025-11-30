@@ -176,9 +176,11 @@ body {
     background-color: var(--color-surface);
     padding: 1rem;
     border-radius: 0.5rem;
-    overflow-x: auto;
     margin-top: 0;
     margin-bottom: 1.5rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .prose pre code {
@@ -193,6 +195,19 @@ body {
     margin-right: 0;
     font-style: italic;
     color: var(--color-text-muted);
+  }
+
+  /* Mermaid diagram styles */
+  .prose .mermaid {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    overflow-x: auto;
+  }
+
+  .prose .mermaid svg {
+    max-width: 100%;
+    height: auto;
   }
 }
 

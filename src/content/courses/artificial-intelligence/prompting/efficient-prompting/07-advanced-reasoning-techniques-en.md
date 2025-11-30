@@ -32,36 +32,42 @@ Why does this work? When you ask for immediate answers, the AI jumps directly to
 
 The simplest form of Chain of Thought:
 
-> Think through this step by step before giving your answer.
+```
+Think through this step by step before giving your answer.
+```
 
 Or more specifically:
 
-> Before answering, work through the following steps:
-> 1. First, consider X
-> 2. Then, analyze Y
-> 3. Finally, evaluate Z
-> 4. Now provide your recommendation based on this analysis.
+```
+Before answering, work through the following steps:
+1. First, consider X
+2. Then, analyze Y
+3. Finally, evaluate Z
+4. Now provide your recommendation based on this analysis.
+```
 
 ### Applying chain of thought to our running example
 
 Let us evolve our Japan prompt for a complex optimization:
 
-> You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.
->
-> I'm planning my first trip to Japan with the following details:
-> [All our context from Chapter 4]
->
-> **Before creating the itinerary, I want you to think through the following:**
->
-> 1. **Route optimization:** What's the most logical geographical flow? Consider travel times between cities and avoiding backtracking.
->
-> 2. **Seasonal factors:** April 5-19 covers cherry blossom season. When and where are blossoms likely to be at peak? How should this affect our routing?
->
-> 3. **Pace considerations:** Given my preference for moderate pace and the physical constraints I mentioned, what's the right number of cities/regions? What's a realistic daily rhythm?
->
-> 4. **Experience balance:** How do we balance temples/shrines, food experiences, and photography opportunities across the trip?
->
-> **First, share your reasoning on each of these points. Then, create the day-by-day itinerary based on this analysis.**
+```
+You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.
+
+I'm planning my first trip to Japan with the following details:
+[All our context from Chapter 4]
+
+Before creating the itinerary, I want you to think through the following:
+
+1. Route optimization: What's the most logical geographical flow? Consider travel times between cities and avoiding backtracking.
+
+2. Seasonal factors: April 5-19 covers cherry blossom season. When and where are blossoms likely to be at peak? How should this affect our routing?
+
+3. Pace considerations: Given my preference for moderate pace and the physical constraints I mentioned, what's the right number of cities/regions? What's a realistic daily rhythm?
+
+4. Experience balance: How do we balance temples/shrines, food experiences, and photography opportunities across the trip?
+
+First, share your reasoning on each of these points. Then, create the day-by-day itinerary based on this analysis.
+```
 
 Now the AI must work through the complexity before proposing a solution. The final itinerary will reflect careful consideration of multiple factors rather than just listing popular destinations.
 
@@ -79,17 +85,19 @@ Sometimes the problem is not that you need step-by-step reasoning, but that ther
 
 Tree of Thought prompting asks the AI to generate several different approaches, evaluate each one, and then recommend or synthesize the best option.
 
-> I'd like you to generate 3 different approaches to this itinerary:
->
-> **Approach A - Maximum cherry blossom focus:** Optimize entirely around seeing blossoms at their peak
->
-> **Approach B - Culinary journey:** Optimize for food experiences, with blossoms as a bonus
->
-> **Approach C - Balanced experience:** Equal weight to culture, food, and seasonal beauty
->
-> For each approach, outline the basic structure and explain the trade-offs.
->
-> Then, recommend which approach best fits my stated preferences and explain why.
+```
+I'd like you to generate 3 different approaches to this itinerary:
+
+Approach A - Maximum cherry blossom focus: Optimize entirely around seeing blossoms at their peak
+
+Approach B - Culinary journey: Optimize for food experiences, with blossoms as a bonus
+
+Approach C - Balanced experience: Equal weight to culture, food, and seasonal beauty
+
+For each approach, outline the basic structure and explain the trade-offs.
+
+Then, recommend which approach best fits my stated preferences and explain why.
+```
 
 This technique prevents you from getting locked into the first approach the AI thinks of. You see the landscape of possibilities before making a decision.
 
@@ -99,21 +107,25 @@ Here is a powerful technique for catching problems and blind spots: have the AI 
 
 After getting a recommendation, ask the AI to adopt a skeptical persona and critique its own work:
 
-> Now I want you to take on a different role.
->
-> **You are a skeptical traveler who has visited Japan three times and has seen many tourist itineraries go wrong.**
->
-> Review the itinerary you just created. Identify:
-> - Potential problems or oversights
-> - Unrealistic time allocations
-> - Common mistakes this plan might lead to
-> - Missing considerations
->
-> Be genuinely critical. Don't hold back.
+```
+Now I want you to take on a different role.
+
+You are a skeptical traveler who has visited Japan three times and has seen many tourist itineraries go wrong.
+
+Review the itinerary you just created. Identify:
+- Potential problems or oversights
+- Unrealistic time allocations
+- Common mistakes this plan might lead to
+- Missing considerations
+
+Be genuinely critical. Don't hold back.
+```
 
 Then, after receiving the critique:
 
-> Now, return to your consultant role and revise the itinerary based on the valid criticisms raised.
+```
+Now, return to your consultant role and revise the itinerary based on the valid criticisms raised.
+```
 
 This technique catches problems that might otherwise go unnoticed. The AI's "skeptic" persona is not invested in defending the original plan and can spot weaknesses more objectively.
 

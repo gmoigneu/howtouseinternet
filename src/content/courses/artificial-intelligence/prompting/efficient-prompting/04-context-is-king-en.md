@@ -49,23 +49,25 @@ Here are the types of context that most commonly improve responses:
 
 Let us transform our Japan prompt with rich context:
 
-> You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.
->
-> **I'm planning my first trip to Japan with the following details:**
->
-> **Budget:** $3000 for everything except flights (which are already booked)
->
-> **Duration:** 2 weeks, arriving April 5th and departing April 19th
->
-> **Interests:** I love food (especially trying local and regional specialties), traditional culture (temples, shrines, gardens), and photography. I'm not interested in hiking, nightlife, or anime/gaming culture.
->
-> **Travel style:** Moderate pace. I'd rather see fewer places deeply than rush through many. I enjoy some structure but want flexibility for spontaneous discoveries.
->
-> **Physical considerations:** I can walk 5-6 miles per day comfortably but have minor knee issues with steep stairs.
->
-> **Accommodation preference:** Mid-range hotels or traditional ryokans. I want at least one ryokan experience.
->
-> Help me plan this trip.
+```
+You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.
+
+I'm planning my first trip to Japan with the following details:
+
+Budget: $3000 for everything except flights (which are already booked)
+
+Duration: 2 weeks, arriving April 5th and departing April 19th
+
+Interests: I love food (especially trying local and regional specialties), traditional culture (temples, shrines, gardens), and photography. I'm not interested in hiking, nightlife, or anime/gaming culture.
+
+Travel style: Moderate pace. I'd rather see fewer places deeply than rush through many. I enjoy some structure but want flexibility for spontaneous discoveries.
+
+Physical considerations: I can walk 5-6 miles per day comfortably but have minor knee issues with steep stairs.
+
+Accommodation preference: Mid-range hotels or traditional ryokans. I want at least one ryokan experience.
+
+Help me plan this trip.
+```
 
 Look at how much we have narrowed the possibilities. The AI can no longer suggest budget hostels or luxury resorts. It cannot recommend hiking mountains or Akihabara's gaming district. It cannot pack in twenty cities or suggest a lazy single-city stay.
 
@@ -75,7 +77,9 @@ The AI now has specific constraints to work within, and the result will reflect 
 
 Here is a technique many people overlook: explicitly tell the AI what to do when it does not know something.
 
-> If you are unsure about current pricing, opening hours, or recent changes to any location, please say "I'm not certain about current [X]" rather than providing potentially outdated information.
+```
+If you are unsure about current pricing, opening hours, or recent changes to any location, please say "I'm not certain about current [X]" rather than providing potentially outdated information.
+```
 
 This simple addition dramatically reduces hallucination. You are giving the AI permission to admit uncertainty instead of forcing it to fill every gap with confident-sounding guesses.
 

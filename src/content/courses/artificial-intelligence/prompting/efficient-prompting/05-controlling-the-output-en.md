@@ -81,25 +81,27 @@ You can specify exactly how content should be organized:
 
 Let us add output formatting to our Japan prompt:
 
-> You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.
->
-> I'm planning my first trip to Japan with the following details:
-> [All our context from Chapter 4]
->
-> **Please provide a day-by-day itinerary in a table format with these columns:**
-> - **Date** (April 5-19)
-> - **Location** (which city/area I'll be in)
-> - **Morning Activity** (brief description, 10-15 words)
-> - **Afternoon Activity** (brief description, 10-15 words)
-> - **Evening Activity** (brief description, 10-15 words)
-> - **Estimated Daily Cost** (in USD, excluding accommodation)
->
-> **After the table, include:**
-> 1. A brief section on recommended accommodations for each location
-> 2. Must-know tips specific to April travel in Japan
-> 3. A packing checklist tailored to this itinerary
->
-> **Keep all descriptions concise and practical. Focus on specifics rather than generalities.**
+```
+You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.
+
+I'm planning my first trip to Japan with the following details:
+[All our context from Chapter 4]
+
+Please provide a day-by-day itinerary in a table format with these columns:
+- Date (April 5-19)
+- Location (which city/area I'll be in)
+- Morning Activity (brief description, 10-15 words)
+- Afternoon Activity (brief description, 10-15 words)
+- Evening Activity (brief description, 10-15 words)
+- Estimated Daily Cost (in USD, excluding accommodation)
+
+After the table, include:
+1. A brief section on recommended accommodations for each location
+2. Must-know tips specific to April travel in Japan
+3. A packing checklist tailored to this itinerary
+
+Keep all descriptions concise and practical. Focus on specifics rather than generalities.
+```
 
 Now the AI knows exactly what to produce. You will get a structured table you can actually use for planning, followed by organized supplementary information in the exact sections you requested.
 
@@ -111,7 +113,9 @@ One of the most powerful formatting techniques is also the most overlooked: aski
 
 Instead of asking "What should I do?", ask "What are the options, and what are the trade-offs for each?"
 
-> Give me 3 options for how to spend Day 3, with pros and cons for each based on my stated preferences.
+```
+Give me 3 options for how to spend Day 3, with pros and cons for each based on my stated preferences.
+```
 
 This transforms the AI from someone who makes decisions for you into an advisor who helps you make informed decisions yourself.
 

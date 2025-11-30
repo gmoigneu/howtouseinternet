@@ -29,9 +29,11 @@ But when you assign a persona, the AI shifts its entire response pattern to matc
 
 Let us evolve our Japan prompt with a persona:
 
-> **You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years.** You know the country intimately, understand common mistakes tourists make, and have insider knowledge about the best experiences.
->
-> Plan me a trip to Japan.
+```
+You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years. You know the country intimately, understand common mistakes tourists make, and have insider knowledge about the best experiences.
+
+Plan me a trip to Japan.
+```
 
 Even though we have not added many other details yet, this prompt will generate a noticeably different response. The AI now has a perspective to adopt. It will share advice that sounds like it comes from someone with deep, practical experience rather than someone reading from a Wikipedia summary.
 

@@ -131,18 +131,42 @@ Include diagrams when they genuinely help visualize:
 - Hierarchies or structures
 
 Diagram requirements:
-- **Grayscale only**: No colors
-- **Clear labels**: Use full words, not abbreviations
+- **Grayscale only**: Use only black (#000), white (#fff), and shades of gray (#333, #666, #999, #ccc, #eee, etc.)
+- **No chromatic colors**: Do not use colored fills like blue (#e1f5fe), orange (#fff3e0), purple (#f3e5f5), etc.
+- **Short node labels**: Keep text in nodes brief (2-4 words max). Long descriptions cause rendering issues and text cutoff.
+- **Avoid subgraphs when possible**: Subgraphs add visual complexity and can have rendering issues. Use them sparingly.
+- **No line breaks in nodes**: Avoid `<br/>` tags in node labels - they often render poorly
 - **Simple**: Don't overcrowd; break complex diagrams into multiple simpler ones
-- **Accessible**: Always provide a text description before or after the diagram
+- **Accessible**: Always provide a text description before or after the diagram to explain what each element means
 
-Example:
+**Styling rules for Mermaid:**
+- **Default elements**: White fill (`#fff`) with black stroke (`#000`) - clean and readable
+- **Emphasized elements**: Black fill (`#000`) with white text (`#fff`) - for key concepts or focal points
+- **Gray accents**: Use gray (`#666`, `#999`, `#ccc`) sparingly and only when it adds meaning (e.g., secondary processes, optional steps)
+- Subgraphs are acceptable for grouping related elements
+
+**Good example (black and white with emphasis):**
 ```mermaid
 flowchart LR
     A[Your Browser] --> B[DNS Server]
     B --> C[Website IP Address]
     C --> D[Web Server]
     D --> E[Website Content]
+    style A fill:#fff,stroke:#000
+    style B fill:#fff,stroke:#000
+    style C fill:#000,stroke:#000,color:#fff
+    style D fill:#fff,stroke:#000
+    style E fill:#fff,stroke:#000
+```
+
+In this example, the IP Address is emphasized (black fill) because it's the key piece of information being resolved.
+
+**Bad example (uses chromatic colors - don't do this):**
+```mermaid
+flowchart LR
+    A[Browser] --> B[Server]
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
 ```
 
 ### Sources and Links

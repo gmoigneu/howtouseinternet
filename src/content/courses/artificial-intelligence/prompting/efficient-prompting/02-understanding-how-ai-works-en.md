@@ -18,32 +18,29 @@ When you chat with an AI assistant, there is more happening behind the scenes th
 
 ```mermaid
 flowchart TB
-    subgraph "What You See"
-        UI[Chat Interface]
-    end
-
-    subgraph "What Actually Happens"
-        SP[System Prompt<br/>Hidden instructions that<br/>define AI behavior]
-        UP[User Prompt<br/>Your message]
-        CTX[Conversation History<br/>Previous messages]
-    end
-
-    subgraph "The AI"
-        MODEL[Language Model<br/>Trained on text data<br/>Predicts next words]
-    end
+    UI[Chat Interface]
+    SP[System Prompt]
+    UP[User Prompt]
+    CTX[Conversation History]
+    MODEL[Language Model]
+    RESPONSE[AI Response]
 
     UI --> UP
     SP --> MODEL
     UP --> MODEL
     CTX --> MODEL
-    MODEL --> RESPONSE[AI Response]
+    MODEL --> RESPONSE
     RESPONSE --> UI
 
-    style SP fill:#e1f5fe
-    style UP fill:#fff3e0
-    style MODEL fill:#f3e5f5
-    style RESPONSE fill:#e8f5e9
+    style UI fill:#fff,stroke:#000
+    style SP fill:#fff,stroke:#000
+    style UP fill:#fff,stroke:#000
+    style CTX fill:#fff,stroke:#000
+    style MODEL fill:#000,stroke:#000,color:#fff
+    style RESPONSE fill:#fff,stroke:#000
 ```
+
+The diagram above shows how different pieces work together when you chat with AI:
 
 **The Language Model** is the AI itself, a neural network trained on vast amounts of text. Different models have different capabilities. You might have heard names like GPT-4, Claude, or Gemini. These are different models, each with their own strengths, knowledge cutoffs, and behaviors.
 
@@ -85,7 +82,9 @@ When you type a prompt, you are not asking a question and waiting for an answer.
 
 Consider our Japan example again:
 
-> Plan me a trip to Japan.
+```
+Plan me a trip to Japan.
+```
 
 From the AI's perspective, this text could be continued in millions of different ways. Someone looking for budget backpacking advice would write differently than someone planning a luxury honeymoon. Someone who loves hiking would want different recommendations than someone interested in food and culture. Someone visiting for three days has completely different needs than someone staying for three weeks.
 
@@ -119,11 +118,15 @@ Here is a useful way to think about every interaction with AI:
 
 You are not asking a question. You are starting a pattern that the AI will complete.
 
-> Plan me a trip to Japan.
+```
+Plan me a trip to Japan.
+```
 
 This starts a pattern that could be completed by any generic travel advice.
 
-> You are an experienced Japan travel consultant helping a first-time visitor. I'm planning a two-week trip to Japan in April with a budget of $3000. I love traditional culture, temples, and amazing food, but I'm not interested in hiking or nightlife. Help me plan an itinerary.
+```
+You are an experienced Japan travel consultant helping a first-time visitor. I'm planning a two-week trip to Japan in April with a budget of $3000. I love traditional culture, temples, and amazing food, but I'm not interested in hiking or nightlife. Help me plan an itinerary.
+```
 
 This starts a pattern that can only be completed by specific, personalized travel advice from an expert perspective.
 

@@ -79,41 +79,45 @@ Let us see how far we have come with our running example.
 
 **The Beginning:**
 
-> Plan me a trip to Japan.
+```
+Plan me a trip to Japan.
+```
 
 **The End:**
 
-> You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years. You know the country intimately, understand common mistakes tourists make, and have insider knowledge about the best experiences.
->
-> I'm planning my first trip to Japan with the following details:
->
-> **Budget:** $3000 for everything except flights (already booked)
-> **Duration:** 2 weeks, arriving April 5th, departing April 19th
-> **Interests:** Food (local and regional specialties), traditional culture (temples, shrines, gardens), photography. NOT interested in hiking, nightlife, or anime/gaming culture.
-> **Travel style:** Moderate pace. Prefer depth over breadth. Some structure with room for spontaneity.
-> **Physical considerations:** Can walk 5-6 miles/day comfortably. Minor knee issues with steep stairs.
-> **Accommodation preference:** Mid-range hotels or traditional ryokans. Want at least one ryokan experience.
->
-> **Before creating the itinerary, think through:**
-> 1. Route optimization: most logical geographical flow, minimizing backtracking
-> 2. Seasonal factors: cherry blossom timing and locations for April 5-19
-> 3. Pace considerations: right number of regions given my constraints
-> 4. Experience balance: temples, food, photography across the trip
->
-> **Then provide a day-by-day itinerary in this format:**
->
-> | Date | Location | Morning | Afternoon | Evening | Est. Cost |
-> |------|----------|---------|-----------|---------|-----------|
-> | April 5 | Tokyo (Asakusa) | Arrive Narita, train to Asakusa. Check into ryokan. | Explore Senso-ji Temple. | Dinner at Sometaro (okonomiyaki). Walk Nakamise at night. | $45 |
->
-> **Follow this exact level of specificity:** actual restaurant names where possible, booking notes, specific attractions rather than vague suggestions.
->
-> **After the itinerary, include:**
-> 1. Accommodation recommendations for each location (with prices)
-> 2. April-specific travel tips
-> 3. A packing checklist for this itinerary
->
-> If you're unsure about current hours, prices, or recent changes, please say "verify current [X]" rather than guessing.
+```
+You are an experienced Japan travel consultant who has helped hundreds of first-time visitors plan their trips over the past 15 years. You know the country intimately, understand common mistakes tourists make, and have insider knowledge about the best experiences.
+
+I'm planning my first trip to Japan with the following details:
+
+Budget: $3000 for everything except flights (already booked)
+Duration: 2 weeks, arriving April 5th, departing April 19th
+Interests: Food (local and regional specialties), traditional culture (temples, shrines, gardens), photography. NOT interested in hiking, nightlife, or anime/gaming culture.
+Travel style: Moderate pace. Prefer depth over breadth. Some structure with room for spontaneity.
+Physical considerations: Can walk 5-6 miles/day comfortably. Minor knee issues with steep stairs.
+Accommodation preference: Mid-range hotels or traditional ryokans. Want at least one ryokan experience.
+
+Before creating the itinerary, think through:
+1. Route optimization: most logical geographical flow, minimizing backtracking
+2. Seasonal factors: cherry blossom timing and locations for April 5-19
+3. Pace considerations: right number of regions given my constraints
+4. Experience balance: temples, food, photography across the trip
+
+Then provide a day-by-day itinerary in this format:
+
+| Date | Location | Morning | Afternoon | Evening | Est. Cost |
+|------|----------|---------|-----------|---------|-----------|
+| April 5 | Tokyo (Asakusa) | Arrive Narita, train to Asakusa. Check into ryokan. | Explore Senso-ji Temple. | Dinner at Sometaro (okonomiyaki). Walk Nakamise at night. | $45 |
+
+Follow this exact level of specificity: actual restaurant names where possible, booking notes, specific attractions rather than vague suggestions.
+
+After the itinerary, include:
+1. Accommodation recommendations for each location (with prices)
+2. April-specific travel tips
+3. A packing checklist for this itinerary
+
+If you're unsure about current hours, prices, or recent changes, please say "verify current [X]" rather than guessing.
+```
 
 This prompt will generate a detailed, personalized, day-by-day itinerary that actually reflects this traveler's specific situation. Every technique we learned is present: persona, rich context, explicit formatting, a concrete example, and chain of thought reasoning.
 
